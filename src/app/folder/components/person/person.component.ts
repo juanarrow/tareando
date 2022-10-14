@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Person } from '../../models/person';
 import { PeopleService } from '../../services/people.service';
 
@@ -9,6 +9,8 @@ import { PeopleService } from '../../services/people.service';
 })
 export class PersonComponent implements OnInit {
 
+  @Output() onEdit = new EventEmitter;
+  @Output() onDelete = new EventEmitter;
   @Input() person:Person;
   constructor(
     private peopleSvc:PeopleService
@@ -21,12 +23,12 @@ export class PersonComponent implements OnInit {
 
   }
 
-  onEdit(){
-
+  onEditClick(){
+    this.onEdit.emit(this.person);
   }
 
-  onDelete(){
-    this.peopleSvc.deletePersonById(this.person.id);
+  onDeleteClick(){
+    this.onDelete.emit(this.person);
   }
 
 }

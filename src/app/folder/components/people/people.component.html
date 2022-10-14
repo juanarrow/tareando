@@ -2,5 +2,5 @@
   <ion-item>
     <ion-button (click)="onNewPerson()" style="margin:10px;width:50px;height:50px;--border-radius:50%" slot="start" icon-only><ion-icon style="zoom:2" name="add-outline"></ion-icon></ion-button>
   </ion-item>
-  <app-person *ngFor="let person of getPeople()" [person]="person"></app-person>
+  <app-person *ngFor="let person of getPeople()" [person]="person" (onEdit)="onEditPerson($event)" (onDelete)="onDeletePerson($event)"></app-person>
 </ion-list>

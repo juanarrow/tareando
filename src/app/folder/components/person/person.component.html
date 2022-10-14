@@ -4,6 +4,6 @@
     <img *ngIf="person.picture" alt="Person picture" [src]="person.picture" />
   </ion-avatar>
   <ion-label>{{person.name}} {{person.surname}}</ion-label>
-  <ion-button icon-only fill="clear" (click)="onEdit()"><ion-icon style="zoom:1.5" name="create-outline" ></ion-icon></ion-button>
-  <ion-button icon-only fill="clear" color="danger" (click)="onDelete()"><ion-icon style="zoom:1.5" name="trash-outline" ></ion-icon></ion-button>
+  <ion-button icon-only fill="clear" (click)="onEditClick()"><ion-icon style="zoom:1.5" name="create-outline" ></ion-icon></ion-button>
+  <ion-button icon-only fill="clear" color="danger" (click)="onDeleteClick()"><ion-icon style="zoom:1.5" name="trash-outline" ></ion-icon></ion-button>
 </ion-item>
