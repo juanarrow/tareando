@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Person } from '../../models/person';
 import { PeopleService } from '../../services/people.service';
 import { PersonDetailComponent } from '../person-detail/person-detail.component';
@@ -13,7 +13,8 @@ export class PeopleComponent implements OnInit {
 
   constructor(
     private peopleSvc:PeopleService,
-    private modal:ModalController
+    private modal:ModalController,
+    private alert:AlertController
   ) { }
 
   ngOnInit() {
@@ -33,7 +34,17 @@ export class PeopleComponent implements OnInit {
     });
     modal.present();
     modal.onDidDismiss().then(result=>{
-
+      if(result && result.data){
+        switch(result.data.mode){
+          case 'New':
+            this.peopleSvc.addPerson(result.data.person);
+            break;
+          case 'Edit':
+            this.peopleSvc.updatePerson(result.data.person);
+            break;
+          default:
+        }
+      }
     });
   }
   
@@ -45,8 +56,35 @@ export class PeopleComponent implements OnInit {
     this.presentPersonForm(person);
   }
 
+  async onDeleteAlert(person){
+    const alert = await this.alert.create({
+      header: '¿Está seguro de que desear borrar a la persona?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log("Operacion cancelada");
+          },
+        },
+        {
+          text: 'Borrar',
+          role: 'confirm',
+          handler: () => {
+            this.peopleSvc.deletePersonById(person.id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+  }
+  
   onDeletePerson(person){
-    this.peopleSvc.deletePersonById(person.id);
+   this.onDeleteAlert(person);
+    
   }
 
 }
