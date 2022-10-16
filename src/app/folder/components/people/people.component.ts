@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Person } from '../../models/person';
+import { Person } from '../../models/person.model';
 import { PeopleService } from '../../services/people.service';
 import { PersonDetailComponent } from '../person-detail/person-detail.component';
 
@@ -81,7 +81,7 @@ export class PeopleComponent implements OnInit {
 
     const { role } = await alert.onDidDismiss();
   }
-  
+
   onDeletePerson(person){
    this.onDeleteAlert(person);
     

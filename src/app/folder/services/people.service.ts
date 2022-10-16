@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Person } from '../models/person';
+import { Person } from '../models/person.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +11,22 @@ export class PeopleService {
       id:1,
       name:"Juan",
       surname:"García",
-      nickname:"Juanarrow"
+      nickname:"Juanarrow",
+      picture:"https://drive.google.com/uc?export=view&id=1_OaTxoyCng4aiMtAiABtWED_S885gdwn"
     },
     {
       id:2,
       name:"Pedro",
       surname:"Cueto",
-      nickname:"Pedrin"
+      nickname:"Pedrin",
+      picture:"https://drive.google.com/uc?export=view&id=1pWGvaEQiUEXgwWnR12KCKK1qDq1bqp1J"
     },
     {
       id:3,
-      name:"Antonio",
+      name:"Sara",
       surname:"Gutiérrez",
-      nickname:"Toño"
+      nickname:"Sarita",
+      picture:"https://drive.google.com/uc?export=view&id=1XmVmg5bgImIsS83LNtFhunvpBbBD09OU"
     }
   ];
 

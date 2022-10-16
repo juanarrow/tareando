@@ -1,3 +1,7 @@
-<p>
-  tasks works!
-</p>
+<ion-list>
+  <ion-item>
+    <ion-button slot="start" (click)="onNewTask()" style="margin:10px;width:50px;height:50px;--border-radius:50%" slot="start" icon-only><ion-icon style="zoom:2" name="add-outline"></ion-icon></ion-button>
+    <ion-label>Nueva tarea</ion-label>
+  </ion-item>
+  <app-task *ngFor="let task of getTasks()" [task]="task" (onEdit)="onEditTask($event)" (onDelete)="onDeleteTask($event)"></app-task>
+</ion-list>
