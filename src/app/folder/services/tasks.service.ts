@@ -11,13 +11,13 @@ export class TasksService {
       id:1,
       name:"Task1",
       durationInSecs:3600,
-      picture:null
+      picture:"https://drive.google.com/uc?export=view&id=14HXI_T6WnRaJCkhKxKcAtJsovFzoHAl4"
     },
     {
       id:2,
       name:"Task2",
       durationInSecs:5400,
-      picture:null
+      picture:"https://drive.google.com/uc?export=view&id=1GMQKvk0rm6_1nL9W3zcAyUK3tsMcB9oo"
     }
   ];
 

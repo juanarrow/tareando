@@ -1,10 +1,15 @@
 <ion-item-sliding #sliding [disabled]="!isLowResolution()">
   <ion-item>
-    <ion-avatar class="person">
-      <img *ngIf="!person.picture" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      <img *ngIf="person.picture" alt="Person picture" [src]="person.picture" />
+    <ion-avatar class="task">
+      <img *ngIf="!getTask()?.picture" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+      <img *ngIf="getTask()?.picture" alt="Person picture" [src]="getTask().picture" />
     </ion-avatar>
-    <ion-label>{{person.surname}}, {{person.name}}</ion-label>
+    <ion-icon name="link-outline"></ion-icon>
+    <ion-avatar class="person">
+      <img *ngIf="!getPerson()?.picture" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      <img *ngIf="getPerson()?.picture" alt="Person picture" [src]="getPerson().picture" />
+    </ion-avatar>
+    <ion-label class="ion-text-center ion-text-wrap">{{assignment.dateTime | date:'short'}}</ion-label>
     <ion-button class="item-expanded" *ngIf="!isLowResolution()" slot="end" fill="clear" (click)="onEditClick(sliding)">
       <div class="vertical">
         <ion-icon name="create" ></ion-icon>
@@ -19,7 +24,7 @@
     </ion-button>
   </ion-item>
 
-  <ion-item-options >
+  <ion-item-options>
     <ion-item-option (click)="onEditClick(sliding)">
       <ion-icon slot="top" name="create" ></ion-icon>
       {{'Editar' | uppercase}}

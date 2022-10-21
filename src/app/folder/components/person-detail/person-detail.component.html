@@ -7,6 +7,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
+  <ion-img *ngIf="form.controls.picture.value" [src]="form.controls.picture.value"></ion-img>
+  <ion-img *ngIf="!form.controls.picture.value" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"></ion-img>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
     <ion-item>
       <ion-label position="floating">

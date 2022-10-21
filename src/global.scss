@@ -24,3 +24,50 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+ion-button.item-expanded{
+    height:100%;
+    margin-inline-start:0;
+    div.vertical{
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content: center;
+        ion-icon{
+            margin:5px;
+            zoom:1.5;
+        }
+    }
+    div.horizontal{
+        height:100%;
+        display:flex;
+        align-items:center;
+        justify-content: center;
+        ion-icon{
+            margin:5px;
+            zoom:1.5;
+        }
+    }
+}
+
+ion-avatar.task{
+    min-width:75px;
+    min-height:75px;
+    margin:10px;
+}
+
+ion-avatar.person{
+    min-width:50px;
+    min-height:50px;
+    margin:10px;
+    margin-right:20px
+}
+
+.modal-full-right-side{
+    display:flex;
+    --height:100%;
+    justify-content: flex-end;
+    --max-width:350px;
+}

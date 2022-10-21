@@ -1,7 +1,3 @@
 <ion-list>
-  <ion-item>
-    <ion-button slot="start" (click)="onNewPerson()" style="margin:10px;width:50px;height:50px;--border-radius:50%" slot="start" icon-only><ion-icon style="zoom:2" name="add-outline"></ion-icon></ion-button>
-    <ion-label>Nueva persona</ion-label>
-  </ion-item>
   <app-person *ngFor="let person of getPeople()" [person]="person" (onEdit)="onEditPerson($event)" (onDelete)="onDeletePerson($event)"></app-person>
 </ion-list>

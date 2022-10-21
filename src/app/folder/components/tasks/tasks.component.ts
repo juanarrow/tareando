@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Task } from '../../models/task.model';
+import { AssignmentsService } from '../../services/assignments.service';
 import { TasksService } from '../../services/tasks.service';
 import { TaskDetailComponent } from '../task-detail/task-detail.component';
 
@@ -14,7 +15,8 @@ export class TasksComponent implements OnInit {
   constructor(
     private alert:AlertController,
     private modal:ModalController,
-    private tasksSvc:TasksService
+    private tasksSvc:TasksService,
+    private assignmentsSvc:AssignmentsService
   ) { }
 
   ngOnInit() {}
@@ -27,7 +29,8 @@ export class TasksComponent implements OnInit {
       component:TaskDetailComponent,
       componentProps:{
         task:task
-      }
+      },
+      cssClass:"modal-full-right-side"
     });
     modal.present();
     modal.onDidDismiss().then(result=>{
@@ -44,18 +47,16 @@ export class TasksComponent implements OnInit {
       }
     });
   }
-  
-  onNewTask(){
-    this.presentTaskForm(null);  
+
+  onEditTask(task){
+    this.presentTaskForm(task);
   }
 
-  onEditTask(person){
-    this.presentTaskForm(person);
-  }
+  async onDeleteAlert(task){
 
-  async onDeleteAlert(person){
     const alert = await this.alert.create({
-      header: '¿Está seguro de que desear borrar la tarea?',
+      header: 'Atención',
+      message: '¿Está seguro de que desear borrar la tarea?',
       buttons: [
         {
           text: 'Cancelar',
@@ -68,7 +69,27 @@ export class TasksComponent implements OnInit {
           text: 'Borrar',
           role: 'confirm',
           handler: () => {
-            this.tasksSvc.deleteTaskById(person.id);
+            this.tasksSvc.deleteTaskById(task.id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+  }
+
+  async onTaskExistsAlert(task){
+    const alert = await this.alert.create({
+      header: 'Error',
+      message: 'No es posible borrar la tarea porque está asignada a una persona',
+      buttons: [
+        {
+          text: 'Cerrar',
+          role: 'close',
+          handler: () => {
+           
           },
         },
       ],
@@ -79,9 +100,11 @@ export class TasksComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
   
-  onDeleteTask(person){
-   this.onDeleteAlert(person);
-    
+  onDeleteTask(task){
+    if(!this.assignmentsSvc.getAssignmentsByTaskId(task.id).length)
+      this.onDeleteAlert(task);
+    else
+      this.onTaskExistsAlert(task);
   }
 
 }
