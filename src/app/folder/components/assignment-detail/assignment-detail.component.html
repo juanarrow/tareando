@@ -1,3 +1,21 @@
-<p>
-  assignment-detail works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Datos de la persona</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onDismiss(null)">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime showDefaultTitle="true" showDefaultButtons="true" preferWheel="true" name="dateTime" id="datetime" ></ion-datetime>
+      </ng-template>
+    </ion-modal>
+    <ion-button [disabled]="!form.valid" type="submit">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
+  </form>
+</ion-content>

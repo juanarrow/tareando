@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { Assignment } from '../../models/assignment.model';
+import { AssignmentsService } from '../../services/assignments.service';
+import { PeopleService } from '../../services/people.service';
+import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -7,8 +13,49 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssignmentDetailComponent implements OnInit {
 
-  constructor() { }
+  form:FormGroup;
+  mode:"New" | "Edit" = "New";
+  @Input('assignment') set assignment(assignment:Assignment){
+    if(assignment){
+      this.form.controls.id.setValue(assignment.id);
+      this.form.controls.taskId.setValue(assignment.taskId);
+      this.form.controls.personId.setValue(assignment.personId);
+      this.form.controls.dateTime.setValue(assignment.dateTime);
+      this.mode = "Edit";
+    }
+  }
+  
 
-  ngOnInit() {}
+  constructor(
+    private tasksSvc:TasksService,
+    private peopleSvc:PeopleService,
+    private assignmentsSvc:AssignmentsService,
+    private fb:FormBuilder,
+    private modal:ModalController
+  ) { 
+    this.form = this.fb.group({
+      id:[null],
+      taskId:[-1, [Validators.min(1)]],
+      personId:[-1, [Validators.min(1)]],
+      dateTime:['', [Validators.required]],
+    });
+  }
+
+  ngOnInit() {
+
+  }
+
+  onSubmit(){
+    
+    this.modal.dismiss({assignment: this.form.value, mode:this.mode}, 'ok');
+  }
+
+  onDismiss(result){
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  onChangeDateTime(dateTime){
+    this.form.controls.dateTime.setValue(dateTime);
+  }
 
 }
