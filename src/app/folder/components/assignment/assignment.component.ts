@@ -40,6 +40,7 @@ export class AssignmentComponent implements OnInit {
   }
 
   getPerson():Person{
+    console.log(new Date().toISOString());
     var personId = this.assignment.personId;
     if(personId)
       return this.peopleSvc.getPersonById(personId);

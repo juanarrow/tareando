@@ -13,7 +13,9 @@
 
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime showDefaultTitle="true" showDefaultButtons="true" preferWheel="true" name="dateTime" id="datetime" ></ion-datetime>
+        <ion-datetime doneText="Aceptar"
+        cancelText="Cancelar" 
+        showDefaultButtons="true" preferWheel="true" name="dateTime" id="datetime" ></ion-datetime>
       </ng-template>
     </ion-modal>
     <ion-button [disabled]="!form.valid" type="submit">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
