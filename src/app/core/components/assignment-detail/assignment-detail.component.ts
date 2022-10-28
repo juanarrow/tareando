@@ -5,6 +5,7 @@ import { Assignment } from 'src/app/core/models/assignment.model';
 import { AssignmentsService } from 'src/app/core/services/assignments.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { PeopleService } from 'src/app/core/services/people.service';
+import { Person } from '../../models';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -26,6 +27,7 @@ export class AssignmentDetailComponent implements OnInit {
   }
   
 
+  
   constructor(
     private tasksSvc:TasksService,
     private peopleSvc:PeopleService,
