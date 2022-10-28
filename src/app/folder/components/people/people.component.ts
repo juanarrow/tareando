@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Person } from '../../models/person.model';
-import { AssignmentsService } from '../../services/assignments.service';
-import { PeopleService } from '../../services/people.service';
-import { PersonDetailComponent } from '../person-detail/person-detail.component';
+import { AssignmentsService } from 'src/app/core/services/assignments.service';
+import { PersonDetailComponent } from 'src/app/core/components/person-detail/person-detail.component';
+import { PeopleService } from 'src/app/core/services/people.service';
+import { Person } from 'src/app/core/models/person.model';
 
 @Component({
   selector: 'app-people',

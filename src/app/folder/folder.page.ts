@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { AssignmentDetailComponent } from './components/assignment-detail/assignment-detail.component';
-import { PersonDetailComponent } from './components/person-detail/person-detail.component';
-import { TaskDetailComponent } from './components/task-detail/task-detail.component';
-import { AssignmentsService } from './services/assignments.service';
-import { PeopleService } from './services/people.service';
-import { TasksService } from './services/tasks.service';
+import { AssignmentDetailComponent } from '../core/components/assignment-detail/assignment-detail.component';
+import { PersonDetailComponent } from '../core/components/person-detail/person-detail.component';
+import { TaskDetailComponent } from '../core/components/task-detail/task-detail.component';
+import { AssignmentsService } from '../core/services/assignments.service';
+import { PeopleService } from '../core/services/people.service';
+import { TasksService } from '../core/services/tasks.service';
 
 @Component({
   selector: 'app-folder',

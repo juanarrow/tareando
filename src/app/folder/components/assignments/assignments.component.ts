@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Assignment } from '../../models/assignment.model';
-import { AssignmentsService } from '../../services/assignments.service';
-import { AssignmentDetailComponent } from '../assignment-detail/assignment-detail.component';
+import { Assignment } from 'src/app/core/models/assignment.model';
+import { AssignmentsService } from 'src/app/core/services/assignments.service';
+import { AssignmentDetailComponent } from '../../../core/components/assignment-detail/assignment-detail.component';
 
 @Component({
   selector: 'app-assignments',
@@ -27,7 +27,7 @@ export class AssignmentsComponent implements OnInit {
     const modal = await this.modal.create({
       component:AssignmentDetailComponent,
       componentProps:{
-        person:assignment
+        assignment:assignment
       },
       cssClass:"modal-full-right-side"
     });
