@@ -4,7 +4,6 @@ import { PersonComponent } from '.'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PersonDetailComponent, TaskComponent, TaskDetailComponent, AssignmentComponent, AssignmentDetailComponent } from '.';
-import { PersonSelectableComponent } from './components/person-selectable/person-selectable.component';
 
 
 
@@ -16,7 +15,6 @@ import { PersonSelectableComponent } from './components/person-selectable/person
     TaskDetailComponent,
     AssignmentComponent,
     AssignmentDetailComponent,
-    PersonSelectableComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +33,6 @@ import { PersonSelectableComponent } from './components/person-selectable/person
     TaskDetailComponent,
     AssignmentComponent,
     AssignmentDetailComponent,
-    PersonSelectableComponent
   ]
 })
 export class CoreModule { }

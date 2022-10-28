@@ -9,7 +9,6 @@
 <ion-content class="ion-padding">
   
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
-    <app-person-selectable formControlName="personId"></app-person-selectable>
     <ion-datetime-button datetime="datetime"></ion-datetime-button>
 
     <ion-modal [keepContentsMounted]="true">
