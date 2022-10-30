@@ -24,7 +24,7 @@ export class PeopleComponent implements OnInit {
   }
 
   getPeople(){
-    return this.peopleSvc.getPeople();
+    return this.peopleSvc._people$;
   }
 
   async presentPersonForm(person:Person){

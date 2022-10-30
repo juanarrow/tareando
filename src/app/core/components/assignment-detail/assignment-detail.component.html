@@ -9,14 +9,32 @@
 <ion-content class="ion-padding">
   
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+    <ion-item-divider>
+      <ion-label>
+       Persona que la realiza
+      </ion-label>
+    </ion-item-divider>
+    <app-task-selectable formControlName="taskId"></app-task-selectable>
+    <ion-item-divider>
+      <ion-label>
+        Tarea a realizar
+      </ion-label>
+    </ion-item-divider>
     <app-person-selectable formControlName="personId"></app-person-selectable>
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
-
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime id="datetime"></ion-datetime>
-      </ng-template>
-    </ion-modal>
-    <ion-button [disabled]="!form.valid" type="submit">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
+    <ion-item-divider>
+      <ion-label>
+       Fecha y hora
+      </ion-label>
+    </ion-item-divider>
+    <app-date-time-selectable formControlName="dateTime"></app-date-time-selectable>
   </form>
 </ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

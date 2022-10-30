@@ -1,0 +1,25 @@
+<ion-accordion-group [multiple]="true" #accordion>
+  <ion-accordion value="first">
+    <ion-item slot="header" color="light">
+      <ng-container *ngIf="selectedTask!=null">
+        <ion-avatar class="task">
+          <img *ngIf="!selectedTask?.picture" alt="Silhouette of a task's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          <img *ngIf="selectedTask?.picture" alt="task picture" [src]="selectedTask?.picture" />
+        </ion-avatar>
+        <ion-label>{{selectedTask?.name}}</ion-label>
+      </ng-container>
+      <ion-label *ngIf="!selectedTask">Selecciona una tarea</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      <ion-list>
+        <ion-item *ngFor="let task of getTasks()" button detail  (click)="onTaskClicked(task, accordion)">
+          <ion-avatar class="task">
+            <img *ngIf="!task.picture" alt="Silhouette of a task's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            <img *ngIf="task.picture" alt="task picture" [src]="task.picture" />
+          </ion-avatar>
+          <ion-label>{{task.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-accordion>
+</ion-accordion-group>

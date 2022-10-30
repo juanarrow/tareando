@@ -21,7 +21,7 @@ export class TasksComponent implements OnInit {
 
   ngOnInit() {}
   getTasks(){
-    return this.tasksSvc.getTasks();
+    return this.tasksSvc.taks$;
   }
 
   async presentTaskForm(task:Task){

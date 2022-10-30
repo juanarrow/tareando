@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PersonDetailComponent, TaskComponent, TaskDetailComponent, AssignmentComponent, AssignmentDetailComponent } from '.';
 import { PersonSelectableComponent } from './components/person-selectable/person-selectable.component';
+import { TaskSelectableComponent } from './components/task-selectable/task-selectable.component';
+import { DateTimeSelectableComponent } from './components/date-time-selectable/date-time-selectable.component';
 
 
 
@@ -16,7 +18,10 @@ import { PersonSelectableComponent } from './components/person-selectable/person
     TaskDetailComponent,
     AssignmentComponent,
     AssignmentDetailComponent,
-    PersonSelectableComponent
+    PersonSelectableComponent,
+    TaskSelectableComponent,
+    DateTimeSelectableComponent
+
   ],
   imports: [
     CommonModule,
@@ -35,7 +40,9 @@ import { PersonSelectableComponent } from './components/person-selectable/person
     TaskDetailComponent,
     AssignmentComponent,
     AssignmentDetailComponent,
-    PersonSelectableComponent
+    PersonSelectableComponent,
+    TaskSelectableComponent,
+    DateTimeSelectableComponent
   ]
 })
 export class CoreModule { }

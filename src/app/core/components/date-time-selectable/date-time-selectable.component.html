@@ -1,0 +1,18 @@
+<ion-accordion-group [multiple]="true" #accordion>
+  <ion-accordion value="first">
+    <ion-item slot="header" color="light">
+      <ng-container *ngIf="selectedDateTime">
+        <ion-label>{{selectedDateTime | date:'short'}}</ion-label>
+      </ng-container>
+      <ion-label *ngIf="!selectedDateTime">Seleccione una fecha y hora</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      <ion-datetime #datetime (ionChange)="onDateTimeChanged($event, accordion)">
+        <ion-buttons slot="buttons">
+          <ion-button color="danger" (click)="onCancel(datetime, accordion)">Cancelar</ion-button>
+          <ion-button color="primary" (click)="onConfirm(datetime, accordion)">Hecho</ion-button>
+        </ion-buttons>
+      </ion-datetime>
+    </div>
+  </ion-accordion>
+</ion-accordion-group>

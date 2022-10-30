@@ -17,17 +17,33 @@ import { TaskDetailComponent } from '../core/components/task-detail/task-detail.
 import { AssignmentComponent } from '../core/components/assignment/assignment.component';
 import { AssignmentsComponent } from './components/assignments/assignments.component';
 import { CoreModule } from '../core/core.module';
+import { ScheduleComponent } from './components/schedule/schedule.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
+import scrollgridPlugin from '@fullcalendar/scrollgrid';
+import daygridPlugin from '@fullcalendar/daygrid';
+import timegridPlugin from '@fullcalendar/timegrid';
+
+import interactionPlugin from '@fullcalendar/interaction';
+FullCalendarModule.registerPlugins([
+  scrollgridPlugin,
+  daygridPlugin,
+  timegridPlugin,
+  interactionPlugin
+]);
 
 @NgModule({
   imports: [
     CoreModule,
-    FolderPageRoutingModule
+    FolderPageRoutingModule,
+    FullCalendarModule
   ],
   declarations: [
     FolderPage, 
     HomeComponent, 
     AssignmentsComponent,
     TasksComponent, 
-    PeopleComponent]
+    PeopleComponent,
+    ScheduleComponent]
 })
 export class FolderPageModule {}
