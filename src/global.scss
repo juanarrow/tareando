@@ -57,6 +57,10 @@ ion-avatar.task{
     min-height:75px;
     margin:10px;
 }
+.minimized{
+    min-width: unset!important;
+    min-height: unset!important;
+}
 
 ion-avatar.person{
     min-width:50px;
@@ -70,4 +74,8 @@ ion-avatar.person{
     --height:100%;
     justify-content: flex-end;
     --max-width:350px;
+}
+.fc .fc-timegrid-slot {
+    height: 65px !important; 
+    border-bottom: 0;
 }

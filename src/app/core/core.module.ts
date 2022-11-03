@@ -7,6 +7,7 @@ import { PersonDetailComponent, TaskComponent, TaskDetailComponent, AssignmentCo
 import { PersonSelectableComponent } from './components/person-selectable/person-selectable.component';
 import { TaskSelectableComponent } from './components/task-selectable/task-selectable.component';
 import { DateTimeSelectableComponent } from './components/date-time-selectable/date-time-selectable.component';
+import { AssignmentScheduleComponent } from './components/assignment-schedule/assignment-schedule.component';
 
 
 
@@ -20,7 +21,8 @@ import { DateTimeSelectableComponent } from './components/date-time-selectable/d
     AssignmentDetailComponent,
     PersonSelectableComponent,
     TaskSelectableComponent,
-    DateTimeSelectableComponent
+    DateTimeSelectableComponent,
+    AssignmentScheduleComponent
 
   ],
   imports: [
@@ -42,7 +44,8 @@ import { DateTimeSelectableComponent } from './components/date-time-selectable/d
     AssignmentDetailComponent,
     PersonSelectableComponent,
     TaskSelectableComponent,
-    DateTimeSelectableComponent
+    DateTimeSelectableComponent,
+    AssignmentScheduleComponent
   ]
 })
 export class CoreModule { }

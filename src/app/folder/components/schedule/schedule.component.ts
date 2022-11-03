@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular';
-import { AssignmentsService, PeopleService, TasksService } from 'src/app/core';
+import { AssignmentComponent, AssignmentsService, PeopleService, TasksService } from 'src/app/core';
 import * as moment from 'moment-timezone';
 import esLocale from '@fullcalendar/core/locales/es';
+import { AssignmentScheduleComponent } from 'src/app/core/components/assignment-schedule/assignment-schedule.component';
 
 @Component({
   selector: 'app-schedule',
@@ -16,7 +17,8 @@ export class ScheduleComponent implements OnInit {
   constructor(
     private assignmentsSvc:AssignmentsService,
     private peopleSvc:PeopleService,
-    private tasksSvc:TasksService
+    private tasksSvc:TasksService,
+    private containerRef: ViewContainerRef
   ) {
     this.assignmentsSvc.assignments$.subscribe((tasks)=>{
       
@@ -25,16 +27,35 @@ export class ScheduleComponent implements OnInit {
         initialView: 'timeGridDay',
         height: 'auto',
         slotDuration: '00:30:00',
-        slotLabelInterval: '01:00',
+        slotLabelInterval: '00:30',
         eventOverlap:false,
+        contentHeight:'auto',
         eventChange:(event)=>{
-          console.log(event);
+          console.log(event.event.start);
+          console.log(event.event.extendedProps.assignment.dateTime)
+          
+          var assignment = {...event.event.extendedProps.assignment};
+          assignment.dateTime = moment(event.event.start).toISOString();
+          this.assignmentsSvc.updateAssignment(assignment);
+          
         },
         editable:true,
         events: tasks.map(a=>{
           var task = this.tasksSvc.getTaskById(a.taskId);
-          return {"title":task.name, "start":moment(a.dateTime).toISOString(), "end":moment(a.dateTime).add(task.durationInSecs, 'seconds').toISOString()};
-        })
+          return {
+            "title":task.name, 
+            "start":moment(a.dateTime).toISOString(), 
+            "end":moment(a.dateTime).add(task.durationInSecs, 'seconds').toISOString(),
+            "assignment":a
+          };
+        }),
+        eventContent:(arg)=>{
+          var comp:ComponentRef<AssignmentScheduleComponent> = this.containerRef.createComponent(AssignmentScheduleComponent);
+          comp.instance.assignment = arg.event.extendedProps.assignment;
+          return { domNodes: [comp.location.nativeElement] }
+          
+        }
+
       };
       
     });
