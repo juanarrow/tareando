@@ -15,14 +15,14 @@ export class AssignmentsService {
       personId:1,
       taskId:1,
       createdAt:moment().toISOString(),
-      dateTime:'2022-10-30T21:00:00.000Z',
+      dateTime:moment().toISOString(),
     },
     {
         id:2,
         personId:2,
         taskId:2,
         createdAt:moment().toISOString(),
-        dateTime:'2022-10-30T21:00:00.000Z',
+        dateTime:moment().add(1,'days').toISOString(),
       }
   ];
 

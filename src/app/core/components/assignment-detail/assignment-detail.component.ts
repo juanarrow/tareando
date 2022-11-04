@@ -39,7 +39,7 @@ export class AssignmentDetailComponent implements OnInit {
       id:[null],
       taskId:[-1, [Validators.min(1)]],
       personId:[-1, [Validators.min(1)]],
-      dateTime:['', [Validators.required]],
+      dateTime:[null, [Validators.required]],
     });
   }
 
