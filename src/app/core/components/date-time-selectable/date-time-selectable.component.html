@@ -7,7 +7,7 @@
       <ion-label *ngIf="!hasValue">Seleccione una fecha y hora</ion-label>
     </ion-item>
     <div class="ion-padding" slot="content">
-      <ion-datetime #datetime value="{{(date$ | async)}}" (ionChange)="onDateTimeChanged($event, accordion)">
+      <ion-datetime #datetime value="{{(date$ | async)}}" (ionChange)="onDateTimeChanged($event, accordion)" >
         <ion-buttons slot="buttons">
           <ion-button color="danger" (click)="onCancel(datetime, accordion)">Cancelar</ion-button>
           <ion-button color="primary" (click)="onConfirm(datetime, accordion)">Hecho</ion-button>

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { PersonComponent } from '.'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -8,8 +8,11 @@ import { PersonSelectableComponent } from './components/person-selectable/person
 import { TaskSelectableComponent } from './components/task-selectable/task-selectable.component';
 import { DateTimeSelectableComponent } from './components/date-time-selectable/date-time-selectable.component';
 import { AssignmentScheduleComponent } from './components/assignment-schedule/assignment-schedule.component';
+import es from '@angular/common/locales/es';
+import en from '@angular/common/locales/en';
 
-
+registerLocaleData(en);
+registerLocaleData(es);
 
 @NgModule({
   declarations: [
@@ -46,6 +49,12 @@ import { AssignmentScheduleComponent } from './components/assignment-schedule/as
     TaskSelectableComponent,
     DateTimeSelectableComponent,
     AssignmentScheduleComponent
+  ],
+  providers:[
+    {
+      provide: LOCALE_ID,
+      useValue: 'es'
+    },
   ]
 })
 export class CoreModule { }

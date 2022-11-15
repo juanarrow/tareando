@@ -2,7 +2,7 @@ import { AfterViewInit, Component, forwardRef, OnDestroy, OnInit } from '@angula
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonAccordionGroup, IonDatetime } from '@ionic/angular';
 import * as moment from 'moment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval } from 'rxjs';
 
 export const DATETIME_PROFILE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,6 +55,7 @@ export class DateTimeSelectableComponent implements OnInit, ControlValueAccessor
   }
 
   onDateTimeChanged(event, accordion:IonAccordionGroup){
+    
     setTimeout(() => {
       var value = this.formatDate(moment(event.detail.value));
       if(value!=this.dateSubject.getValue())
@@ -70,12 +71,12 @@ export class DateTimeSelectableComponent implements OnInit, ControlValueAccessor
     }, 100);
   }
 
-  onCancel(datetime:IonDatetime, accordion){
+  onCancel(datetime:IonDatetime, accordion:IonAccordionGroup){
     datetime.cancel();
     accordion.value='';
   }
 
-  onConfirm(datetime:IonDatetime, accordion){
+  onConfirm(datetime:IonDatetime, accordion:IonAccordionGroup){
     datetime.confirm();
   }
 
