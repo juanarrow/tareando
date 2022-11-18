@@ -10,6 +10,9 @@ import { DateTimeSelectableComponent } from './components/date-time-selectable/d
 import { AssignmentScheduleComponent } from './components/assignment-schedule/assignment-schedule.component';
 import es from '@angular/common/locales/es';
 import en from '@angular/common/locales/en';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { createTranslateLoader } from './utils/translate';
 
 registerLocaleData(en);
 registerLocaleData(es);
@@ -32,6 +35,14 @@ registerLocaleData(es);
     CommonModule,
     FormsModule,
     IonicModule.forRoot(),
+    HttpClientModule,
+    TranslateModule.forChild({
+      loader: {
+      provide: TranslateLoader,
+      useFactory: (createTranslateLoader),
+      deps: [HttpClient]
+      }
+      }),
     ReactiveFormsModule
   ],
   exports:[
@@ -48,7 +59,8 @@ registerLocaleData(es);
     PersonSelectableComponent,
     TaskSelectableComponent,
     DateTimeSelectableComponent,
-    AssignmentScheduleComponent
+    AssignmentScheduleComponent,
+    HttpClientModule
   ],
   providers:[
     {

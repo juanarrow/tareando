@@ -6,6 +6,8 @@ import { AssignmentsService } from 'src/app/core/services/assignments.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { PeopleService } from 'src/app/core/services/people.service';
 import { Person } from '../../models';
+import { TranslateService } from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -16,6 +18,7 @@ export class AssignmentDetailComponent implements OnInit {
 
   form:FormGroup;
   mode:"New" | "Edit" = "New";
+  button_text = "";
   @Input('assignment') set assignment(assignment:Assignment){
     if(assignment){
       this.form.controls.id.setValue(assignment.id);
@@ -33,7 +36,8 @@ export class AssignmentDetailComponent implements OnInit {
     private peopleSvc:PeopleService,
     private assignmentsSvc:AssignmentsService,
     private fb:FormBuilder,
-    private modal:ModalController
+    private modal:ModalController,
+    private translate:TranslateService
   ) { 
     this.form = this.fb.group({
       id:[null],
@@ -43,7 +47,11 @@ export class AssignmentDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if(this.mode == "Edit")
+      this.button_text = await lastValueFrom(this.translate.get('assignment.edit'));  
+    else
+      this.button_text = await this.translate.get('assignment.new').toPromise();
 
   }
 

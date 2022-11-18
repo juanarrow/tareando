@@ -25,6 +25,9 @@ import daygridPlugin from '@fullcalendar/daygrid';
 import timegridPlugin from '@fullcalendar/timegrid';
 
 import interactionPlugin from '@fullcalendar/interaction';
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { createTranslateLoader } from '../core/utils/translate';
 FullCalendarModule.registerPlugins([
   scrollgridPlugin,
   daygridPlugin,
@@ -35,6 +38,13 @@ FullCalendarModule.registerPlugins([
 @NgModule({
   imports: [
     CoreModule,
+    TranslateModule.forChild({
+      loader: {
+      provide: TranslateLoader,
+      useFactory: (createTranslateLoader),
+      deps: [HttpClient]
+      }
+      }),
     FolderPageRoutingModule,
     FullCalendarModule
   ],

@@ -1,3 +1,4 @@
 <ion-list>
+  <h1>{{'home.title' | translate}}</h1>
   <app-assignment *ngFor="let assignment of (getAssignments() | async)" [assignment]="assignment" (onEdit)="onEditAssignment($event)" (onDelete)="onDeleteAssignment($event)"></app-assignment>
 </ion-list>
