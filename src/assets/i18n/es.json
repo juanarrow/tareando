@@ -1,0 +1,9 @@
+{
+    "home":{
+        "title":"Gestión de tareas",
+        "langButton":"Cambia idioma"
+    },
+    "assignment":{
+        "edit":"Editar"
+    }
+}

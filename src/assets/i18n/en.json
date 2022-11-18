@@ -1,0 +1,9 @@
+{
+    "home":{
+        "title":"Task Management",
+        "langButton":"Change Language"
+    },
+    "assignment":{
+        "edit":"Edit"
+    }
+}

@@ -15,6 +15,14 @@
       </ion-label>
       <ion-input type="text" placeholder="Introduce el nombre de la tarea" formControlName="name"></ion-input>
     </ion-item>
-    <ion-button [disabled]="!form.valid" type="submit">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
   </form>
 </ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

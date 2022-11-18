@@ -2,6 +2,7 @@ import * as moment from 'moment-timezone';
 
 import { Injectable } from '@angular/core';
 import { Assignment } from '../models/assignment.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +15,20 @@ export class AssignmentsService {
       personId:1,
       taskId:1,
       createdAt:moment().toISOString(),
-      dateTime:moment().add(1, 'days').toLocaleString(),
+      dateTime:moment().toISOString(),
     },
     {
         id:2,
         personId:2,
         taskId:2,
         createdAt:moment().toISOString(),
-        dateTime:moment().add(1, 'days').toLocaleString(),
+        dateTime:moment().add(1,'days').toISOString(),
       }
   ];
+
+  private _assignmentsSubject:BehaviorSubject<Assignment[]> = new BehaviorSubject(this._assignments);
+  public assignments$ = this._assignmentsSubject.asObservable();
+
 
   id:number = this._assignments.length+1;
   constructor() {
@@ -49,11 +54,13 @@ export class AssignmentsService {
 
   deleteAssignmentById(id:number){
     this._assignments = this._assignments.filter(a=>a.id != id); 
+    this._assignmentsSubject.next(this._assignments);
   }
 
   addAssignment(assingment:Assignment){
     assingment.id = this.id++;
     this._assignments.push(assingment);
+    this._assignmentsSubject.next(this._assignments);
   }
 
   updateAssignment(assignment:Assignment){
@@ -64,6 +71,7 @@ export class AssignmentsService {
       _assignment.createdAt = assignment.createdAt;
       _assignment.dateTime = assignment.dateTime;
     }
+    this._assignmentsSubject.next(this._assignments);
     
   }
 }

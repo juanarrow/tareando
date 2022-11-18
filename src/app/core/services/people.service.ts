@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Person } from '../models/person.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PeopleService {
+export class PeopleService{
 
   private _people:Person[] = [
     {
@@ -31,13 +31,14 @@ export class PeopleService {
     }
   ];
 
-  private peopleSubject:BehaviorSubject<Person[]> = new BehaviorSubject(this._people);
-  public people$ = this.peopleSubject.asObservable();
-
+  private _peopleSubject:BehaviorSubject<Person[]> = new BehaviorSubject(this._people);
+  public _people$ = this._peopleSubject.asObservable();
+  
   id:number = this._people.length+1;
   constructor() {
 
   }
+  
 
   getPeople(){
     return this._people;
@@ -49,13 +50,13 @@ export class PeopleService {
 
   deletePersonById(id:number){
     this._people = this._people.filter(p=>p.id != id); 
-    this.peopleSubject.next(this._people);
+    this._peopleSubject.next(this._people);
   }
 
   addPerson(person:Person){
     person.id = this.id++;
     this._people.push(person);
-    this.peopleSubject.next(this._people);
+    this._peopleSubject.next(this._people);
   }
 
   updatePerson(person:Person){
@@ -65,9 +66,7 @@ export class PeopleService {
       _person.surname = person.surname;
       _person.nickname = person.nickname;
       _person.picture = person.picture;
-      this.peopleSubject.next(this._people);
-    }
-    
-    
+      this._peopleSubject.next(this._people);
+    }    
   }
 }

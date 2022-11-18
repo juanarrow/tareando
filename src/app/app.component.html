@@ -1,12 +1,17 @@
 <ion-app>
+  <ion-fab vertical="top" horizontal="end" edge="false" slot="fixed">
+    <ion-fab-button (click)="onLanguage()">
+      <ion-icon size="small" name="language-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          
+          <ion-button (click)="onLanguage()">{{'home.langButton' | translate}}</ion-button>
+          <h1>{{'home.title' | translate}}</h1>
           <ion-list-header class="menu-header">
               <img class="menu-header__img" src="https://picsum.photos/300/300">
-              
           </ion-list-header>
         
 

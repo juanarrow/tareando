@@ -20,7 +20,7 @@ export class AssignmentsComponent implements OnInit {
   ngOnInit() {}
 
   getAssignments(){
-    return this.assignmentsSvc.getAssignments();
+    return this.assignmentsSvc.assignments$;
   }
 
   async presentAssignmentForm(assignment:Assignment){

@@ -9,14 +9,12 @@ import { Person } from 'src/app/core/models/person.model';
 import { Task } from 'src/app/core/models/task.model';
 
 @Component({
-  selector: 'app-assignment',
-  templateUrl: './assignment.component.html',
-  styleUrls: ['./assignment.component.scss'],
+  selector: 'app-assignment-schedule',
+  templateUrl: './assignment-schedule.component.html',
+  styleUrls: ['./assignment-schedule.component.scss'],
 })
-export class AssignmentComponent implements OnInit {
+export class AssignmentScheduleComponent implements OnInit {
 
-  @Output() onEdit = new EventEmitter;
-  @Output() onDelete = new EventEmitter;
   @Input() assignment:Assignment;
   isLowResolution = lowres;
   constructor(
@@ -45,17 +43,4 @@ export class AssignmentComponent implements OnInit {
       return this.peopleSvc.getPersonById(personId);
     return undefined;
   }
-
-  onEditClick(slide:IonItemSliding){
-    slide.close();
-    this.onEdit.emit(this.assignment);
-  }
-
-  onDeleteClick(slide:IonItemSliding){
-    slide.close();
-    this.onDelete.emit(this.assignment);
-  }
-
-  
-
 }
