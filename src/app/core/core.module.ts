@@ -2,7 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { PersonComponent } from '.'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular';
 import { PersonDetailComponent, TaskComponent, TaskDetailComponent, AssignmentComponent, AssignmentDetailComponent } from '.';
 import { PersonSelectableComponent } from './components/person-selectable/person-selectable.component';
 import { TaskSelectableComponent } from './components/task-selectable/task-selectable.component';
@@ -60,13 +60,14 @@ registerLocaleData(es);
     TaskSelectableComponent,
     DateTimeSelectableComponent,
     AssignmentScheduleComponent,
-    HttpClientModule
+    HttpClientModule,
+
   ],
   providers:[
     {
       provide: LOCALE_ID,
       useValue: 'es'
-    },
+    }
   ]
 })
 export class CoreModule { }

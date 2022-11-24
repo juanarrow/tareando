@@ -37,18 +37,19 @@ export function httpProviderFactory(
       deps: [HttpClient]
       }
       }),
-      
-    
     AppRoutingModule,
     
     ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    HTTP,
     {
       provide: HttpClientProvider,
       deps: [HTTP, HttpClient, Platform],
       useFactory: httpProviderFactory,  
-    },],
+    },
+  ],
+    
   bootstrap: [AppComponent],
 })
 export class AppModule {}

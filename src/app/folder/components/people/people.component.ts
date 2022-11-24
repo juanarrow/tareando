@@ -4,6 +4,7 @@ import { AssignmentsService } from 'src/app/core/services/assignments.service';
 import { PersonDetailComponent } from 'src/app/core/components/person-detail/person-detail.component';
 import { PeopleService } from 'src/app/core/services/people.service';
 import { Person } from 'src/app/core/models/person.model';
+import { HttpClientProvider } from 'src/app/core/services/http-client.provider';
 
 @Component({
   selector: 'app-people',
@@ -16,7 +17,8 @@ export class PeopleComponent implements OnInit {
     private peopleSvc:PeopleService,
     private assignmentsSvc:AssignmentsService,
     private modal:ModalController,
-    private alert:AlertController
+    private alert:AlertController,
+    private api:HttpClientProvider
   ) { }
 
   ngOnInit() {

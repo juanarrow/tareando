@@ -37,6 +37,7 @@ export class PeopleService{
   
   id:number = this._people.length+1;
   constructor(
+    public api:HttpClientProvider
   ) {
     
   }
@@ -44,6 +45,7 @@ export class PeopleService{
 
   getPeople(){
     return this._people;
+
   }
 
   getPersonById(id:number){
