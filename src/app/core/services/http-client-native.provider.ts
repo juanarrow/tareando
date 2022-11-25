@@ -1,5 +1,5 @@
 // angular
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 // ionic-native
 
@@ -20,7 +20,7 @@ export class HttpClientNativeProvider extends HttpClientProvider {
      *
      * @param http ionic-native http
      */
-    constructor(private readonly http: HTTP, private readonly httpClient:HttpClient) {
+    constructor(@Inject(HTTP) private http:HTTP, private readonly httpClient:HttpClient) {
         super();
         //this.http.setHeader('*', 'Accept', 'application/json');
     }
