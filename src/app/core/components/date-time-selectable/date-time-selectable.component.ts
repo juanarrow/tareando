@@ -3,6 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonAccordionGroup, IonDatetime } from '@ionic/angular';
 import * as moment from 'moment';
 import { BehaviorSubject, interval } from 'rxjs';
+import { LocaleService } from '../../services/locale.service';
 
 export const DATETIME_PROFILE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -18,6 +19,12 @@ export const DATETIME_PROFILE_VALUE_ACCESSOR: any = {
 })
 export class DateTimeSelectableComponent implements OnInit, ControlValueAccessor, OnDestroy {
   hasValue = false;
+
+  constructor(
+    public locale:LocaleService
+  ){
+
+  }
   
   ngOnDestroy(): void {
     this.dateSubject.complete();

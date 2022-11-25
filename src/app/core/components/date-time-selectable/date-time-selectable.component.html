@@ -2,7 +2,7 @@
   <ion-accordion value="first">
     <ion-item slot="header" color="light">
       <ng-container *ngIf="hasValue">
-        <ion-label>{{(date$ | async) | date:'short'}}</ion-label>
+        <ion-label>{{(date$ | async) | date:'short':undefined:locale.locale}}</ion-label>
       </ng-container>
       <ion-label *ngIf="!hasValue">Seleccione una fecha y hora</ion-label>
     </ion-item>

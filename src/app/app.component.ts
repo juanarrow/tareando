@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { LocaleService } from './core/services/locale.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -17,7 +18,8 @@ export class AppComponent {
 
   language = 1; // 0 español, 1 inglés
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private locale:LocaleService
   ) {
     this.translate. setDefaultLang('en');
   }
@@ -26,9 +28,12 @@ export class AppComponent {
     switch(this.language){
       case 0:
         this.translate.setDefaultLang('es');
+        this.locale.registerCulture('es');
+
         break;
       case 1:
         this.translate.setDefaultLang('en');
+        this.locale.registerCulture('en');
         break;
     }
   }

@@ -7,6 +7,7 @@ import { PeopleService } from 'src/app/core/services/people.service';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { Person } from 'src/app/core/models/person.model';
 import { Task } from 'src/app/core/models/task.model';
+import { LocaleService } from '../../services/locale.service';
 
 @Component({
   selector: 'app-assignment',
@@ -22,9 +23,9 @@ export class AssignmentComponent implements OnInit {
   constructor(
     private peopleSvc:PeopleService,
     private tasksSvc:TasksService,
-    private assignmentsSvc:AssignmentsService
+    private assignmentsSvc:AssignmentsService,
+    public locale:LocaleService
   ){
-
   }
 
   ngOnInit(
