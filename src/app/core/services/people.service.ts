@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Person } from '../models/person.model';
+import { ApiService } from './api.service';
 import { HttpClientProvider } from './http-client.provider';
 
 @Injectable({
@@ -37,11 +38,21 @@ export class PeopleService{
   
   id:number = this._people.length+1;
   constructor(
-    public api:HttpClientProvider
+    public api:ApiService
   ) {
-    
+    this.init();
   }
   
+  async init(){
+    this.api.get('/api/tasks').subscribe({
+      next:data=>{
+        console.log(data);
+      },
+      error:err=>{
+
+      }
+    });
+  }
 
   getPeople(){
     return this._people;
