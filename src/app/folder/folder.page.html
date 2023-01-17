@@ -24,4 +24,10 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <input id="fileLoader" type="file" #fileLoader name="files" title="Load Files" hidden>
+    <ion-fab-button (click)="uploadImage(fileLoader)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
