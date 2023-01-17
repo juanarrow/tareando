@@ -55,6 +55,8 @@ export class HttpClientWebProvider extends HttpClientProvider {
         });
     }
 
+
+    
     /**
      * post
      *
@@ -163,9 +165,10 @@ export class HttpClientWebProvider extends HttpClientProvider {
         urlEncoded: boolean = false
     ): HttpHeaders {
 
-        return new HttpHeaders(headers)
-            .set('Accept', urlEncoded ? ' application/x-www-form-urlencoded': 'application/json')
-            .set('Content-Type', 'application/json');
+        var _headers = new HttpHeaders(headers);
+        if(urlEncoded)
+            _headers.set('Accept', ' application/x-www-form-urlencoded');
+        return _headers;
     }
 
     /**
@@ -180,5 +183,5 @@ export class HttpClientWebProvider extends HttpClientProvider {
         return urlEncoded
             ? new HttpParams({ fromObject: body })
             : body;
-    };
+    }
 }
