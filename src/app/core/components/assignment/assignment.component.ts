@@ -21,10 +21,10 @@ export class AssignmentComponent implements OnInit {
   @Output() onDelete = new EventEmitter;
   @Input('assignment') set assignment(a:Assignment){
     this._assignment = a;
-    this.loadTaksAndPerson(a);
+    this.loadTaskAndPerson(a);
    
   }
-  private async loadTaksAndPerson(a:Assignment){
+  private async loadTaskAndPerson(a:Assignment){
     this._task.next(await this.tasksSvc.getTaskById(a.taskId));
     this._person.next(await this.peopleSvc.getPersonById(a.personId));
   }

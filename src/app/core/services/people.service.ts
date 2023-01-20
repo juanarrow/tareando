@@ -48,7 +48,7 @@ export class PeopleService{
   }
 
   getPersonById(id:number):Promise<Person>{
-    var response:Promise<Person> = new Promise<Person>((resolve, reject)=>{
+    return new Promise<Person>((resolve, reject)=>{
       this.api.get(`/api/people/${id}?populate=picture`).subscribe({
         next:data=>{
           resolve({
@@ -67,7 +67,6 @@ export class PeopleService{
         }
       });
     });
-    return response;
   }
 
   deletePersonById(id:number){

@@ -74,6 +74,7 @@ export class FolderPage implements OnInit {
     var that = this;
     fileLoader.onchange = function () {
       var file = fileLoader.files[0];
+      
       var formData = new FormData();
       formData.append('files', file);
       that.api.post(environment.api_url+"/api/upload",formData).subscribe({

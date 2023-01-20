@@ -105,7 +105,7 @@ export class PeopleComponent implements OnInit {
   }
 
   async onDeletePerson(person){
-     if(!(await this.assignmentsSvc.getAssignmentsByPersonId(person.id)).length)
+     if((await this.assignmentsSvc.getAssignmentsByPersonId(person.id)).length==0)
      this.onDeleteAlert(person);
     else
       this.onPersonExistsAlert(person);

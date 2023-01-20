@@ -50,7 +50,7 @@ export class AssignmentsService {
   }
 
   getAssignmentById(id:number){
-    var response:Promise<Assignment> = new Promise<Assignment>((resolve, reject)=>{
+    return new Promise<Assignment>((resolve, reject)=>{
       this.api.get(`/api/assignments/${id}?populate=person_id, task_id`).subscribe({
         next:data=>{
           resolve({
@@ -67,11 +67,10 @@ export class AssignmentsService {
         }
       });
     });
-    return response;
   }
 
   getAssignmentsByTaskId(taskId:number):Promise<Assignment[]>{
-    var response:Promise<Assignment[]> = new Promise<Assignment[]>((resolve, reject)=>{
+    return new Promise<Assignment[]>((resolve, reject)=>{
       this.api.get( `/api/assignments?task_id=${taskId}&populate=task_id,person_id`).subscribe({
         next:response=>{
           console.log(response);
@@ -86,16 +85,16 @@ export class AssignmentsService {
           resolve(array);
         },
         error:err=>{
+          reject(err);
           console.log(err);
         }
       });
     });
-    return response;
   }
 
   
   getAssignmentsByPersonId(personId:number):Promise<Assignment[]>{    
-    var response:Promise<Assignment[]> = new Promise<Assignment[]>((resolve, reject)=>{
+    return new Promise<Assignment[]>((resolve, reject)=>{
       this.api.get( `/api/assignments?person_id=${personId}&populate=task_id,person_id`).subscribe({
         next:response=>{
           console.log(response);
@@ -110,11 +109,11 @@ export class AssignmentsService {
           resolve(array);
         },
         error:err=>{
+          reject(err);
           console.log(err);
         }
       });
     });
-    return response;
   }
 
   deleteAssignmentById(id:number){

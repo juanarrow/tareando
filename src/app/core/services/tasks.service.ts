@@ -45,7 +45,7 @@ export class TasksService {
   }
 
   getTaskById(id:number):Promise<Task>{
-    var response:Promise<Task> = new Promise<Task>((resolve, reject)=>{
+    return new Promise<Task>((resolve, reject)=>{
       this.api.get(`/api/tasks/${id}?populate=picture`).subscribe({
         next:data=>{
           resolve({
@@ -63,7 +63,6 @@ export class TasksService {
         }
       });
     });
-    return response;
   }
 
   deleteTaskById(id:number){
