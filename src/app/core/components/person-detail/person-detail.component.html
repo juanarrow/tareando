@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <input id="fileLoader" type="file" #fileLoader name="files" title="Load Files" hidden>
-  <ion-img (click)="changePic(fileLoader)" *ngIf="currentImage" [src]="currentImage"></ion-img>
+  <ion-img (click)="changePic(fileLoader)" *ngIf="currentImage" [src]="currentImage | async"></ion-img>
   <ion-img (click)="changePic(fileLoader)" *ngIf="!currentImage" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"></ion-img>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
     <ion-item>

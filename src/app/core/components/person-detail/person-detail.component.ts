@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
 import { Person } from 'src/app/core/models/person.model';
 
 @Component({
@@ -12,7 +13,8 @@ export class PersonDetailComponent implements OnInit {
 
   form:FormGroup;
   mode:"New" | "Edit" = "New";
-  currentImage:string;
+  currentImage = new BehaviorSubject<string>("");
+  currentImage$ = this.currentImage.asObservable();
   @Input('person') set person(person:Person){
     if(person){
       this.form.controls.id.setValue(person.id);
@@ -21,7 +23,7 @@ export class PersonDetailComponent implements OnInit {
       this.form.controls.nickname.setValue(person.nickname);
       this.form.controls.picture.setValue(person.picture);
       if(person.picture)
-        this.currentImage = person.picture;
+        this.currentImage.next(person.picture);
       this.form.controls.pictureFile.setValue(null);
       this.mode = "Edit";
     }
@@ -63,7 +65,7 @@ export class PersonDetailComponent implements OnInit {
       var file = fileLoader.files[0];
       var reader = new FileReader();
       reader.onload = () => {   
-        that.currentImage = reader.result as string;
+        that.currentImage.next(reader.result as string);
         that.form.controls.pictureFile.setValue(file);
       };
       reader.onerror = (error) =>{
