@@ -12,6 +12,7 @@ export class PersonDetailComponent implements OnInit {
 
   form:FormGroup;
   mode:"New" | "Edit" = "New";
+  currentImage:string;
   @Input('person') set person(person:Person){
     if(person){
       this.form.controls.id.setValue(person.id);
@@ -19,6 +20,9 @@ export class PersonDetailComponent implements OnInit {
       this.form.controls.surname.setValue(person.surname);
       this.form.controls.nickname.setValue(person.nickname);
       this.form.controls.picture.setValue(person.picture);
+      if(person.picture)
+        this.currentImage = person.picture;
+      this.form.controls.pictureFile.setValue(null);
       this.mode = "Edit";
     }
   }
@@ -33,7 +37,8 @@ export class PersonDetailComponent implements OnInit {
       name:['', [Validators.required]],
       surname:['', [Validators.required]],
       nickname:['', [Validators.required]],
-      picture:['']
+      picture:[''],
+      pictureFile:[null]
     });
   }
 
@@ -48,6 +53,24 @@ export class PersonDetailComponent implements OnInit {
 
   onDismiss(result){
     this.modal.dismiss(null, 'cancel');
+  }
+
+  
+  changePic(fileLoader){
+    fileLoader.click();
+    var that = this;
+    fileLoader.onchange = function () {
+      var file = fileLoader.files[0];
+      var reader = new FileReader();
+      reader.onload = () => {   
+        that.currentImage = reader.result as string;
+        that.form.controls.pictureFile.setValue(file);
+      };
+      reader.onerror = (error) =>{
+        console.log(error);
+      }
+      reader.readAsDataURL(file);
+    }
   }
 
 }

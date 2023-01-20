@@ -80,13 +80,18 @@ export class PeopleService{
     });
   }
 
-  addPerson(person:Person){
+  async addPerson(person:Person){
+    var _person = {
+      name:person.name,
+      surname:person.surname,
+      nickname:person.nickname
+    };
+    if(person['pictureFile']){
+      var id = await this.uploadImage(person['pictureFile']);
+      _person['picture'] = id;
+    }
     this.api.post(`/api/people`,{
-      data:{
-        name:person.name,
-        surname:person.surname,
-        nickname:person.nickname
-      }
+      data:_person
     }).subscribe({
       next:data=>{
         this.refresh();
@@ -97,13 +102,34 @@ export class PeopleService{
     });
   }
 
-  updatePerson(person:Person){
+  uploadImage(file){  
+    return new Promise<number>((resolve, reject)=>{
+      var formData = new FormData();
+      formData.append('files', file);
+      this.api.post("/api/upload",formData).subscribe({
+        next: data=>{
+          resolve(data[0].id);
+        },
+        error: err=>{
+          reject(err);
+        }
+      });
+    });
+    
+  }
+
+  async updatePerson(person:Person){
+    var _person = {
+      name:person.name,
+      surname:person.surname,
+      nickname:person.nickname
+    };
+    if(person['pictureFile']){
+      var id = await this.uploadImage(person['pictureFile']);
+      _person['picture'] = id;
+    }
     this.api.put(`/api/people/${person.id}`,{
-      data:{
-        name:person.name,
-        surname:person.surname,
-        nickname:person.nickname
-      }
+      data:_person
     }).subscribe({
       next:data=>{
         this.refresh(); 
