@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
@@ -32,7 +32,8 @@ export class PersonDetailComponent implements OnInit {
 
   constructor(
     private fb:FormBuilder,
-    private modal:ModalController
+    private modal:ModalController,
+    private cdr:ChangeDetectorRef
   ) { 
     this.form = this.fb.group({
       id:[null],
@@ -66,6 +67,7 @@ export class PersonDetailComponent implements OnInit {
       var reader = new FileReader();
       reader.onload = () => {   
         that.currentImage.next(reader.result as string);
+        that.cdr.detectChanges();
         that.form.controls.pictureFile.setValue(file);
       };
       reader.onerror = (error) =>{
