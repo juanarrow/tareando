@@ -8,6 +8,7 @@ import { TasksService } from 'src/app/core/services/tasks.service';
 import { Person } from 'src/app/core/models/person.model';
 import { Task } from 'src/app/core/models/task.model';
 import { LocaleService } from '../../services/locale.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-assignment',
@@ -18,33 +19,37 @@ export class AssignmentComponent implements OnInit {
 
   @Output() onEdit = new EventEmitter;
   @Output() onDelete = new EventEmitter;
-  @Input() assignment:Assignment;
+  @Input('assignment') set assignment(a:Assignment){
+    this._assignment = a;
+    this.loadTaksAndPerson(a);
+   
+  }
+  private async loadTaksAndPerson(a:Assignment){
+    this._task.next(await this.tasksSvc.getTaskById(a.taskId));
+    this._person.next(await this.peopleSvc.getPersonById(a.personId));
+  }
+  get assignment():Assignment{
+    return this._assignment;
+  }
+
   isLowResolution = lowres;
+  private _assignment:Assignment;
+
+  private _task:BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  private _person:BehaviorSubject<Person> = new BehaviorSubject<Person>(null);
+  task$:Observable<Task> = this._task.asObservable();
+  person$:Observable<Person> = this._person.asObservable();
   constructor(
     private peopleSvc:PeopleService,
     private tasksSvc:TasksService,
-    private assignmentsSvc:AssignmentsService,
     public locale:LocaleService
   ){
+    
   }
 
   ngOnInit(
   ) {
 
-  }
-
-  getTask():Task{
-    var taskId = this.assignment.taskId;
-    if(taskId)
-      return this.tasksSvc.getTaskById(taskId);
-    return undefined;
-  }
-
-  getPerson():Person{
-    var personId = this.assignment.personId;
-    if(personId)
-      return this.peopleSvc.getPersonById(personId);
-    return undefined;
   }
 
   onEditClick(slide:IonItemSliding){

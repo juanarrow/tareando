@@ -40,14 +40,25 @@ export class ScheduleComponent implements OnInit {
           
         },
         editable:true,
-        events: tasks.map(a=>{
-          var task = this.tasksSvc.getTaskById(a.taskId);
-          return {
-            "title":task.name, 
-            "start":moment(a.dateTime).toISOString(), 
-            "end":moment(a.dateTime).add(task.durationInSecs, 'seconds').toISOString(),
-            "assignment":a
-          };
+        events: tasks.map(async a=>{
+          try {
+            var task = await this.tasksSvc.getTaskById(a.taskId);  
+            return {
+              "title":task.name, 
+              "start":moment(a.dateTime).toISOString(), 
+              "end":moment(a.dateTime).add(task.durationInSecs, 'seconds').toISOString(),
+              "assignment":a
+            };
+          } catch (error) {
+            return{
+              "title":"", 
+              "start":null,
+              "end":null,
+              "assignment":a
+            }
+          }
+          
+          
         }),
         eventContent:(arg)=>{
           var comp:ComponentRef<AssignmentScheduleComponent> = this.containerRef.createComponent(AssignmentScheduleComponent);

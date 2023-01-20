@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Person } from '../models/person.model';
 import { ApiService } from './api.service';
 import { HttpClientProvider } from './http-client.provider';
@@ -9,79 +10,109 @@ import { HttpClientProvider } from './http-client.provider';
 })
 export class PeopleService{
 
-  private _people:Person[] = [
-    {
-      id:1,
-      name:"Juan",
-      surname:"García",
-      nickname:"Juanarrow",
-      picture:"https://drive.google.com/uc?export=view&id=1_OaTxoyCng4aiMtAiABtWED_S885gdwn"
-    },
-    {
-      id:2,
-      name:"Pedro",
-      surname:"Cueto",
-      nickname:"Pedrin",
-      picture:"https://drive.google.com/uc?export=view&id=1pWGvaEQiUEXgwWnR12KCKK1qDq1bqp1J"
-    },
-    {
-      id:3,
-      name:"Sara",
-      surname:"Gutiérrez",
-      nickname:"Sarita",
-      picture:"https://drive.google.com/uc?export=view&id=1XmVmg5bgImIsS83LNtFhunvpBbBD09OU"
-    }
-  ];
-
-  private _peopleSubject:BehaviorSubject<Person[]> = new BehaviorSubject(this._people);
+  private _peopleSubject:BehaviorSubject<Person[]> = new BehaviorSubject([]);
   public _people$ = this._peopleSubject.asObservable();
   
-  id:number = this._people.length+1;
   constructor(
     public api:ApiService
   ) {
-    this.init();
+    this.refresh();
   }
   
-  async init(){
-    this.api.get('/api/tasks').subscribe({
+  async refresh(){
+    this.api.get('/api/people?populate=picture').subscribe({
       next:data=>{
         console.log(data);
+        var array:Person[] = (data.data as Array<any>).map<Person>(person=>{
+          return {id:person.id, 
+                     name:person.attributes.name, 
+                     surname:person.attributes.surname, 
+                     nickname:person.attributes.nickname, 
+                     picture:person.attributes.picture.data?
+                             environment.api_url+person.attributes.picture.data.attributes.url:
+                             "" 
+                  };
+        });
+        this._peopleSubject.next(array);
+        
       },
       error:err=>{
-
+        console.log(err);
       }
     });
   }
 
   getPeople(){
-    return this._people;
+    return this._peopleSubject.value;
 
   }
 
-  getPersonById(id:number){
-    return this._people.find(p=>p.id==id);
+  getPersonById(id:number):Promise<Person>{
+    var response:Promise<Person> = new Promise<Person>((resolve, reject)=>{
+      this.api.get(`/api/people/${id}?populate=picture`).subscribe({
+        next:data=>{
+          resolve({
+            id:data.data.id,
+            name:data.data.attributes.name,
+            surname:data.data.attributes.surname,
+            nickname:data.data.attributes.nickname,
+            picture:data.data.attributes.picture.data?
+                    environment.api_url+data.data.attributes.picture.data?.attributes.url:
+                    ""
+          });
+          
+        },
+        error:err=>{
+          reject(err);
+        }
+      });
+    });
+    return response;
   }
 
   deletePersonById(id:number){
-    this._people = this._people.filter(p=>p.id != id); 
-    this._peopleSubject.next(this._people);
+    this.api.delete(`/api/people/${id}`).subscribe({
+      next:data=>{
+        this.refresh();
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
   }
 
   addPerson(person:Person){
-    person.id = this.id++;
-    this._people.push(person);
-    this._peopleSubject.next(this._people);
+    this.api.post(`/api/people`,{
+      data:{
+        name:person.name,
+        surname:person.surname,
+        nickname:person.nickname
+      }
+    }).subscribe({
+      next:data=>{
+        this.refresh();
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
   }
 
   updatePerson(person:Person){
-    var _person = this._people.find(p=>p.id==person.id);
-    if(_person){
-      _person.name = person.name;
-      _person.surname = person.surname;
-      _person.nickname = person.nickname;
-      _person.picture = person.picture;
-      this._peopleSubject.next(this._people);
-    }    
+    this.api.put(`/api/people/${person.id}`,{
+      data:{
+        name:person.name,
+        surname:person.surname,
+        nickname:person.nickname
+      }
+    }).subscribe({
+      next:data=>{
+        this.refresh(); 
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
+      
   }
 }

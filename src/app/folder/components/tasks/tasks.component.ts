@@ -100,8 +100,8 @@ export class TasksComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
   
-  onDeleteTask(task){
-    if(!this.assignmentsSvc.getAssignmentsByTaskId(task.id).length)
+  async onDeleteTask(task){
+    if(!(await this.assignmentsSvc.getAssignmentsByTaskId(task.id)).length)
       this.onDeleteAlert(task);
     else
       this.onTaskExistsAlert(task);

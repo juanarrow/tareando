@@ -1,63 +1,112 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Task } from 'src/app/core/models/task.model';
+import { environment } from 'src/environments/environment';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
-  private _tasks:Task[] = [
-    {
-      id:1,
-      name:"Task1",
-      durationInSecs:3600,
-      picture:"https://drive.google.com/uc?export=view&id=14HXI_T6WnRaJCkhKxKcAtJsovFzoHAl4"
-    },
-    {
-      id:2,
-      name:"Task2",
-      durationInSecs:5400,
-      picture:"https://drive.google.com/uc?export=view&id=1GMQKvk0rm6_1nL9W3zcAyUK3tsMcB9oo"
-    }
-  ];
-
-  private _tasksSubject:BehaviorSubject<Task[]> = new BehaviorSubject(this._tasks);
+  private _tasksSubject:BehaviorSubject<Task[]> = new BehaviorSubject([]);
   public taks$ = this._tasksSubject.asObservable();
 
-  
+  constructor(
+    private api:ApiService
+  ) {
+    this.refresh();
+  }
 
-  id:number = this._tasks.length+1;
-  constructor() {
-
+  private async refresh(){
+    this.api.get('/api/tasks?populate=picture').subscribe({
+      next:response=>{
+        console.log(response);
+        var array:Task[] = (response.data as Array<any>).map<Task>(task=>{
+          return {id:task.id, 
+                  name:task.attributes.name, 
+                  durationInSecs:task.attributes.durationInSecs,
+                  picture:task.attributes.picture.data?
+                          environment.api_url+task.attributes.picture.data.attributes.url:
+                          "" 
+          };
+        });
+        this._tasksSubject.next(array);
+        
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
   }
 
   getTasks(){
-    return this._tasks;
+    return this._tasksSubject.value;
   }
 
-  getTaskById(id:number){
-    return this._tasks.find(t=>t.id==id);
+  getTaskById(id:number):Promise<Task>{
+    var response:Promise<Task> = new Promise<Task>((resolve, reject)=>{
+      this.api.get(`/api/tasks/${id}?populate=picture`).subscribe({
+        next:data=>{
+          resolve({
+            id:data.data.id,
+            name:data.data.attributes.name,
+            durationInSecs:data.data.attributes.durationInSecs,
+            picture:data.data.attributes.picture.data?
+                    environment.api_url+data.data.attributes.picture.data.attributes.url:
+                    ""
+          });
+          
+        },
+        error:err=>{
+          reject(err);
+        }
+      });
+    });
+    return response;
   }
 
   deleteTaskById(id:number){
-    this._tasks = this._tasks.filter(t=>t.id != id); 
-    this._tasksSubject.next(this._tasks);
+    this.api.delete(`/api/tasks/${id}`).subscribe({
+      next:data=>{
+        this.refresh();
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
   }
 
   addTask(task:Task){
-    task.id = this.id++;
-    this._tasks.push(task);
-    this._tasksSubject.next(this._tasks);
+    this.api.post(`/api/tasks`,{
+      data:{
+        name:task.name,
+        durationInSecs:task.durationInSecs,
+      }
+    }).subscribe({
+      next:data=>{
+        this.refresh();
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
   }
 
   updateTask(task:Task){
-    var _task = this._tasks.find(t=>t.id==task.id);
-    if(_task){
-      _task.name = task.name;
-      _task.durationInSecs = task.durationInSecs;
-    }
-    this._tasksSubject.next(this._tasks);
+    this.api.put(`/api/tasks/${task.id}`,{
+      data:{
+        name:task.name,
+        durationInSecs:task.durationInSecs,
+      }
+    }).subscribe({
+      next:data=>{
+        this.refresh(); 
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
     
   }
 }

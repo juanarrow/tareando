@@ -29,8 +29,13 @@ export class PersonSelectableComponent implements OnInit, ControlValueAccessor {
   ) { }
 
 
-  writeValue(obj: any): void {
-    this.selectedPerson = this.peopleSvc.getPersonById(obj);
+  async writeValue(obj: any) {
+    try {
+      this.selectedPerson = await this.peopleSvc.getPersonById(obj);  
+    } catch (error) {
+      console.log("No se ha podido recupera los datos: "+error);
+    }
+    
   }
   registerOnChange(fn: any): void {
     this.propagateChange = fn;

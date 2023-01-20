@@ -29,8 +29,12 @@ export class TaskSelectableComponent implements OnInit, ControlValueAccessor {
   ) { }
 
 
-  writeValue(obj: any): void {
-    this.selectedTask = this.tasksSvc.getTaskById(obj);
+  async writeValue(obj: any) {
+    try {
+      this.selectedTask = await this.tasksSvc.getTaskById(obj);
+    } catch (error) {
+      console.log("No se ha podido recupera los datos: "+error);
+    }
   }
   registerOnChange(fn: any): void {
     this.propagateChange = fn;

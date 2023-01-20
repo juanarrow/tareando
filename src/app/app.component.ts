@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
+import { ApiService } from './core';
 import { LocaleService } from './core/services/locale.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit{
   public appPages = [
     { title: 'Home', url: '/folder/Home', icon: 'home'},
     { title: 'People', url: '/folder/People', icon: 'people' },
@@ -22,6 +25,9 @@ export class AppComponent {
     private locale:LocaleService
   ) {
     this.translate. setDefaultLang('en');
+  }
+  ngAfterViewInit(): void {
+   
   }
   onLanguage(){
     this.language = (this.language+1)%2;

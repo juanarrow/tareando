@@ -32,17 +32,11 @@ export class AssignmentScheduleComponent implements OnInit {
 
   }
 
-  getTask():Task{
-    var taskId = this.assignment.taskId;
-    if(taskId)
-      return this.tasksSvc.getTaskById(taskId);
-    return undefined;
+  getTask():Promise<Task>{
+      return this.tasksSvc.getTaskById(this.assignment.taskId);
   }
 
-  getPerson():Person{
-    var personId = this.assignment.personId;
-    if(personId)
-      return this.peopleSvc.getPersonById(personId);
-    return undefined;
+  getPerson():Promise<Person>{
+      return this.peopleSvc.getPersonById(this.assignment.personId);
   }
 }

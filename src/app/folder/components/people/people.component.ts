@@ -104,8 +104,8 @@ export class PeopleComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
 
-  onDeletePerson(person){
-     if(!this.assignmentsSvc.getAssignmentsByPersonId(person.id).length)
+  async onDeletePerson(person){
+     if(!(await this.assignmentsSvc.getAssignmentsByPersonId(person.id)).length)
      this.onDeleteAlert(person);
     else
       this.onPersonExistsAlert(person);
