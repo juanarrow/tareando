@@ -5,5 +5,25 @@
     },
     "assignment":{
         "edit":"Editar"
+    },
+    "validators":{
+        "passwordMatch": "Las contraseñas no coinciden",
+        "passwordProto": "Al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número",
+        "email": "Debe introducir un email válido"
+    },
+    "login":{
+        "title":"Iniciar sesión",
+        "email":"Email",
+        "password":"Contraseña",
+        "send":"Enviar"
+    },
+    "register":{
+        "title":"Registro",
+        "first_name":"Nombre",
+        "last_name":"Apellidos",
+        "email":"Email",
+        "password":"Contraseña",
+        "confirm_password":"Repita contraseña",
+        "send":"Enviar"
     }
 }

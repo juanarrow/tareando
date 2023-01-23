@@ -13,6 +13,8 @@ import en from '@angular/common/locales/en';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { createTranslateLoader } from './utils/translate';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { Drivers } from '@ionic/storage';
 
 registerLocaleData(en);
 registerLocaleData(es);
@@ -43,6 +45,10 @@ registerLocaleData(es);
       deps: [HttpClient]
       }
       }),
+    IonicStorageModule.forRoot({
+      name: '__tareandodb',
+          driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+    }),
     ReactiveFormsModule
   ],
   exports:[

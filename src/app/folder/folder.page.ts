@@ -68,23 +68,4 @@ export class FolderPage implements OnInit {
       default:
     }
   }
-
-  uploadImage(fileLoader){
-    fileLoader.click();
-    var that = this;
-    fileLoader.onchange = function () {
-      var file = fileLoader.files[0];
-      
-      var formData = new FormData();
-      formData.append('files', file);
-      that.api.post("/api/upload",formData).subscribe({
-        next: data=>{
-          console.log(data);
-        },
-        error: err=>{
-          console.log(err);
-        }
-      });           
-    }
-  }
 }

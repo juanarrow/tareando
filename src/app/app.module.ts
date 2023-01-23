@@ -14,6 +14,8 @@ import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { HttpClientNativeProvider } from './core/services/http-client-native.provider';
 import { HttpClientWebProvider } from './core/services/http-client-web.provider';
 import { HttpClientProvider } from './core/services/http-client.provider';
+import { SigninComponent } from './components/signin/signin.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 export function httpProviderFactory(
   httpNative:HTTP,
@@ -26,7 +28,7 @@ export function httpProviderFactory(
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SigninComponent, SignupComponent],
   imports: [
     BrowserModule, 
     CoreModule,

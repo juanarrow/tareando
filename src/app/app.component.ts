@@ -1,8 +1,10 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './core';
 import { LocaleService } from './core/services/locale.service';
+import { UserService } from './core/services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,9 @@ export class AppComponent implements AfterViewInit{
   language = 1; // 0 español, 1 inglés
   constructor(
     private translate: TranslateService,
-    private locale:LocaleService
+    private locale:LocaleService,
+    public user:UserService,
+    private router:Router
   ) {
     this.translate. setDefaultLang('en');
   }
@@ -42,5 +46,10 @@ export class AppComponent implements AfterViewInit{
         this.locale.registerCulture('en');
         break;
     }
+  }
+
+  signOut(){
+    this.user.signOut();
+    this.router.navigate(['login']);
   }
 }

@@ -79,3 +79,10 @@ ion-avatar.person{
     height: 65px !important; 
     border-bottom: 0;
 }
+
+.validationError{
+    color:var(--ion-color-danger);
+    font-size:0.8em;
+    display:flex;  
+    width:100%;  
+}

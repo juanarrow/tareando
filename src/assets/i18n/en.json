@@ -5,5 +5,25 @@
     },
     "assignment":{
         "edit":"Edit"
+    },
+    "validators":{
+        "passwordMatch": "Passwords do not match",
+        "passwordProto": "At least 8 characters, one uppercase letter, one lowercase letter and one number",
+        "email": "You must introduce a valid email"
+    },
+    "login":{
+        "title":"Sign in",
+        "email":"Email",
+        "password":"Password",
+        "send":"Send"
+    },
+    "register":{
+        "title":"Register",
+        "first_name":"First name",
+        "last_name":"Last name",
+        "email":"Email",
+        "password":"Password",
+        "confirm_password":"Repeat password",
+        "send":"Send"
     }
 }

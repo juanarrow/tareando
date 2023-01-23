@@ -54,6 +54,7 @@ FullCalendarModule.registerPlugins([
     AssignmentsComponent,
     TasksComponent, 
     PeopleComponent,
-    ScheduleComponent]
+    ScheduleComponent,
+    ]
 })
 export class FolderPageModule {}
