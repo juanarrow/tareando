@@ -6,7 +6,7 @@
         <h1>{{'login.title' | translate}}</h1>
         <div class="form-button right">
           <ion-button (click)="register()" color="primary" fill="clear">
-            <small>quiero registrarme</small>
+            <small>{{'register.register' | translate}}</small>
           </ion-button>
         </div> 
         
@@ -15,7 +15,7 @@
             <ion-label position="stacked">
               {{'login.email' | translate}}
             </ion-label>
-            <ion-input autocomplete="email" type="text" formControlName="identifier"></ion-input>
+            <ion-input [enterkeyhint]="'next'" autocomplete="email" type="text" formControlName="identifier"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">

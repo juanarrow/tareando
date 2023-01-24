@@ -19,6 +19,7 @@
     },
     "register":{
         "title":"Registro",
+        "register":"quiero registrarme",
         "first_name":"Nombre",
         "last_name":"Apellidos",
         "email":"Email",

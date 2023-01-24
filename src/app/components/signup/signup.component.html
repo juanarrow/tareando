@@ -4,7 +4,7 @@
   <ion-list>
     <ion-item lines="none">
       <ion-label position="stacked">
-        {{'register.first_name' | translate}}<span class="required" *ngIf="form.controls.first_name.errors">&#42;</span>
+        {{'register.first_name' | translate}}<span class="required" *ngIf="form.controls.first_name.errors">&nbsp;&#42;</span>
       </ion-label>
       <ion-input autocomplete="" placeHolder="Juan" type="text" formControlName="first_name"></ion-input>
       <span
@@ -14,7 +14,7 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label position="stacked">
-        {{'register.last_name' | translate}}<span class="required" *ngIf="form.controls.last_name.errors">&#42;</span>
+        {{'register.last_name' | translate}}<span class="required" *ngIf="form.controls.last_name.errors">>&nbsp;&#42;</span>
       </ion-label>
       <ion-input autocomplete="" placeHolder="Robles García" type="text" formControlName="last_name"></ion-input>
       <span
@@ -24,7 +24,7 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label position="stacked">
-        {{'register.email' | translate}}<span class="required" *ngIf="form.controls.email.errors">&#42;</span>
+        {{'register.email' | translate}}<span class="required" *ngIf="form.controls.email.errors">&nbsp;&#42;</span>
       </ion-label>
       <ion-input autocomplete="email" placeHolder="usuario@dominio" type="text" formControlName="email"></ion-input>
       <span
@@ -34,7 +34,7 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label position="stacked">
-        {{'register.password' | translate}}<span class="required" *ngIf="form.controls.password.errors">&#42;</span>
+        {{'register.password' | translate}}<span class="required" *ngIf="form.controls.password.errors">&nbsp;&#42;</span>
       </ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
       <span
@@ -44,7 +44,7 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label position="stacked">
-        {{'register.confirm_password' | translate}}<span class="required" *ngIf="form.controls.confirmPassword.errors">&#42;</span>
+        {{'register.confirm_password' | translate}}<span class="required" *ngIf="form.controls.confirmPassword.errors">&nbsp;&#42;</span>
       </ion-label>
       <ion-input (keyup.enter)="form.valid?onRegister():null" [enterkeyhint]="'enter'" type="password" formControlName="confirmPassword"></ion-input>
       <span
