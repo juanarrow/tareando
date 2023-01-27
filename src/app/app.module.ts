@@ -14,8 +14,12 @@ import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { HttpClientNativeProvider } from './core/services/http-client-native.provider';
 import { HttpClientWebProvider } from './core/services/http-client-web.provider';
 import { HttpClientProvider } from './core/services/http-client.provider';
-import { SigninComponent } from './components/signin/signin.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { FirebaseService } from './core/services/firebase/firebase-service';
+import { FirebaseWebService } from './core/services/firebase/web/firebase-web.service';
+
+export function firebaseServiceFactory() {
+      return  new FirebaseWebService();
+}
 
 export function httpProviderFactory(
   httpNative:HTTP,
@@ -28,7 +32,7 @@ export function httpProviderFactory(
 }
 
 @NgModule({
-  declarations: [AppComponent, SigninComponent, SignupComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule, 
     CoreModule,
@@ -49,6 +53,11 @@ export function httpProviderFactory(
       provide: HttpClientProvider,
       deps: [HTTP, HttpClient, Platform],
       useFactory: httpProviderFactory,  
+    },
+    {
+      provide: FirebaseService,
+      deps: [],
+      useFactory: firebaseServiceFactory
     },
   ],
     

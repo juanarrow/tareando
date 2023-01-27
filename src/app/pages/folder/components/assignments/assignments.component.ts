@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Assignment } from 'src/app/core/models/assignment.model';
 import { AssignmentsService } from 'src/app/core/services/assignments.service';
-import { AssignmentDetailComponent } from '../../../core/components/assignment-detail/assignment-detail.component';
+import { AssignmentDetailComponent } from '../../../../core/components/assignment-detail/assignment-detail.component';
 
 @Component({
   selector: 'app-assignments',

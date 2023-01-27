@@ -1,7 +1,7 @@
-import { AbstractControl } from "@angular/forms";
+import { AbstractControl, ValidationErrors } from "@angular/forms";
 
 export class PasswordValidation {
-    static passwordMatch(control: AbstractControl) {
+    static passwordMatch(control: AbstractControl):ValidationErrors {
       const password = control.get('password')?.value;
       const confirmPassword = control.get('confirmPassword')?.value;
   

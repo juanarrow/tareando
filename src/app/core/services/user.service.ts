@@ -26,7 +26,10 @@ export class UserService {
           if(await this.hasTokenInStorage()){
             this.user = JSON.parse(await this.storage.get('user-info'));
             this._isLogged.next(true); 
-            this.router.navigate(['folder/Home']);
+            setTimeout(() => {
+              this.router.navigate(['']);
+            }, 1000);
+            
           }
         } catch (error) {
           console.log(error);
@@ -47,7 +50,8 @@ export class UserService {
   }
 
   public login(credentials:UserLogin):Promise<string>{
-    return new Promise<string>(async (resolve, reject)=>{
+    return new Promise<string>((resolve, reject)=>{
+      
       if(!this.user){
         this.api.post('/api/auth/local', credentials).subscribe(
           {
@@ -70,6 +74,7 @@ export class UserService {
       else{
         reject('already connected');
       }
+      
     });
     
   }

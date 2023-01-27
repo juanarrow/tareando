@@ -12,6 +12,7 @@ import { UserService } from './core/services/user.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements AfterViewInit{
+  
   public appPages = [
     { title: 'Home', url: '/folder/Home', icon: 'home'},
     { title: 'People', url: '/folder/People', icon: 'people' },
@@ -20,7 +21,6 @@ export class AppComponent implements AfterViewInit{
     { title: 'Task pane', url: '/folder/Task Panel', icon: 'layers' },
   ];
   public labels = [];
-
   language = 1; // 0 español, 1 inglés
   constructor(
     private translate: TranslateService,
@@ -52,4 +52,6 @@ export class AppComponent implements AfterViewInit{
     this.user.signOut();
     this.router.navigate(['login']);
   }
+
+  
 }

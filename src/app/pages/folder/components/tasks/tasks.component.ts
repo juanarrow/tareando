@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { AssignmentsService } from 'src/app/core/services/assignments.service';
-import { TaskDetailComponent } from '../../../core/components/task-detail/task-detail.component';
+import { TaskDetailComponent } from '../../../../core/components/task-detail/task-detail.component';
 import { TasksService } from 'src/app/core/services/tasks.service';
 import { Task } from 'src/app/core/models/task.model';
 

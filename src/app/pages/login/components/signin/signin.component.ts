@@ -36,8 +36,11 @@ export class SigninComponent implements OnInit {
 
     modal.onDidDismiss().then(async(response)=>{
       try {
-        await this.user.register(response.data);
-        this.router.navigate(['folder/Home'], {replaceUrl:true});
+        if(response.role=='ok'){
+          await this.user.register(response.data);
+          this.router.navigate(['folder/Home'], {replaceUrl:true});
+        }
+        
       } catch (error) {
         console.log(error);
   
