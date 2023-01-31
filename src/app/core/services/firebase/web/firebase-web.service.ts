@@ -1,11 +1,11 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
-import { initializeApp,  deleteApp } from "firebase/app";
+import { initializeApp,  deleteApp, getApp } from "firebase/app";
 import { setUserId, setUserProperties } from "firebase/analytics";
 import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { createUserWithEmailAndPassword, getAuth, deleteUser, signInAnonymously, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, deleteUser, signInAnonymously, signOut, signInWithEmailAndPassword, initializeAuth, indexedDBLocalPersistence } from "firebase/auth";
 import { HttpClientProvider } from "src/app/core";
 
 
@@ -28,14 +28,14 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
       appId: "1:814431877695:web:e55309685f5827d3b0968a",
       measurementId: "G-BPNBWB3QXT"
     };
+    
       // Initialize Firebase
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
     this.webStorage = getStorage(this.app);
-    this.auth = getAuth(this.app);
+    this.auth = initializeAuth(getApp(), { persistence: indexedDBLocalPersistence });      
+    //this.auth = getAuth(this.app);
     this.active = true;
-    this.isGoogleLogin = false;
-    this.isFacebookLogin = false;
     this.auth.onAuthStateChanged(async user=>{
       this.user = user;
       if(user)

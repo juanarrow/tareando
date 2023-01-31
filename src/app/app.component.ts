@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './core';
+import { FirebaseService } from './core/services/firebase/firebase-service';
 import { LocaleService } from './core/services/locale.service';
 import { UserService } from './core/services/user.service';
 
@@ -23,11 +24,22 @@ export class AppComponent implements AfterViewInit{
   public labels = [];
   language = 1; // 0 español, 1 inglés
   constructor(
+    private firebase:FirebaseService,
     private translate: TranslateService,
     private locale:LocaleService,
     public user:UserService,
     private router:Router
   ) {
+    this.init();
+  }
+
+  private async init(){
+    try {
+      await this.firebase.createUserWithEmailAndPassword("jgargom214@gmail.com", "123456.a");  
+    } catch (error) {
+      console.log(error);
+    }
+    
     this.translate. setDefaultLang('en');
   }
   ngAfterViewInit(): void {

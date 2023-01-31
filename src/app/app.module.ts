@@ -18,7 +18,7 @@ import { FirebaseService } from './core/services/firebase/firebase-service';
 import { FirebaseWebService } from './core/services/firebase/web/firebase-web.service';
 
 export function firebaseServiceFactory() {
-      return  new FirebaseWebService();
+  return  new FirebaseWebService();
 }
 
 export function httpProviderFactory(

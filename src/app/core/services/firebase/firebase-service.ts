@@ -29,10 +29,6 @@ export abstract class FirebaseService{
   protected webStorage;
   protected auth:Auth;
   protected analytics = null;
-  protected isGoogleLogin;
-  protected isFacebookLogin;
-  protected googleProvider = new GoogleAuthProvider();
-  protected facebookProvider = new FacebookAuthProvider();
   protected unsub;
   protected user;
 
