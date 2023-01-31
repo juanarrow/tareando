@@ -38,8 +38,13 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     this.active = true;
     this.auth.onAuthStateChanged(async user=>{
       this.user = user;
-      if(user)
+      if(user){
+        this._isLogged.next(true);
         this.setUserAndEmail(user.uid, user.email);
+      }
+      else{
+        this._isLogged.next(false);
+      }
       console.log(user);
     });
   }
@@ -145,7 +150,7 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
       .catch(err => reject(err))
     })
   }
-  public async signOut(signInAnon:boolean=true) {
+  public async signOut(signInAnon:boolean=false) {
     try {
       await this.auth.signOut();
       if(signInAnon)
@@ -208,6 +213,13 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
           break;
       }
     }
+  }
+  public async connectUserWithEmailAndPassword(email: string, password: string) {
+    try {
+      await signInWithEmailAndPassword(this.auth, email, password);
+    } catch (error) {
+      
+    }    
   }
 
   public deleteUser():Promise<void>{

@@ -31,6 +31,8 @@ export abstract class FirebaseService{
   protected analytics = null;
   protected unsub;
   protected user;
+  protected _isLogged = new BehaviorSubject<boolean>(false);
+  public isLogged$ = this._isLogged.asObservable();
 
   public abstract init();
   public abstract imageUpload(blob: Blob): Promise<any>;
@@ -43,6 +45,7 @@ export abstract class FirebaseService{
   
   public abstract setUserAndEmail(uid:string, email:string);
   public abstract createUserWithEmailAndPassword(email:string, password:string);
+  public abstract connectUserWithEmailAndPassword(email:string, password:string);
   public abstract signOut();
   public abstract signOut(signInAnon:boolean);
   public abstract isUserConnected():Promise<boolean>;
