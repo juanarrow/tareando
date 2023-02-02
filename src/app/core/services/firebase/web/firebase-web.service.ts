@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
+import { FirebaseDocument, FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
 import { initializeApp,  deleteApp, getApp } from "firebase/app";
 import { setUserId, setUserProperties } from "firebase/analytics";
-import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc} from "firebase/firestore";
+import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc, setDoc, query, where, getDocs, Unsubscribe} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth, deleteUser, signInAnonymously, signOut, signInWithEmailAndPassword, initializeAuth, indexedDBLocalPersistence } from "firebase/auth";
 import { HttpClientProvider } from "src/app/core";
@@ -12,7 +12,6 @@ import { HttpClientProvider } from "src/app/core";
 
 @Injectable({providedIn: 'root'})
 export class FirebaseWebService extends FirebaseService implements OnDestroy{
-  
   constructor() {
     super();
     this.init();
@@ -103,53 +102,61 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     }
   }
 
-  public createImagesDocument(data: FirestoreImages): Promise<any> {
-    return new Promise((resolve, reject) => {
-      addDoc(collection(this.db, FIRESTORE_IMAGES_COLLECTION), data).then(docRef => resolve(docRef.id)
-      ).catch(err =>  reject(err))
-    })
+  public createDocument(collectionName:string, data:any):Promise<string>{
+    return new Promise((resolve,reject)=>{
+      const collectionRef = collection(this.db, collectionName);
+      addDoc(collectionRef, data).then(docRef => resolve(docRef.id)
+      ).catch(err =>  reject(err));
+    });
   }
 
-  public updateImages(documentId: string, images: FirestoreImages): Promise<string | boolean> {
-    const docRef = doc(this.db, FIRESTORE_IMAGES_COLLECTION, documentId)
-    return new Promise((resolve, reject) => {
-      updateDoc(docRef, {...images}).then(() => resolve(true))
-      .catch(err => reject(err))
-    })
+  public updateDocument(collectionName:string, document:string, data:any):Promise<void>{
+    return new Promise(async (resolve,reject)=>{
+      const collectionRef = collection(this.db, collectionName);
+      setDoc(doc(collectionRef,document),data).then(docRef => resolve()
+      ).catch(err =>  reject(err));
+    });
   }
 
-  public updateMaxImages(documentId: string, max: FirestoreImages): Promise<string | boolean> {
-    const docRef = doc(this.db, FIRESTORE_IMAGES_COLLECTION, documentId)
-    return new Promise((resolve, reject) => {
-      updateDoc(docRef, {...max}).then(() => resolve(true))
-      .catch(err => reject(err))
-    })
+  public getDocuments(collectionName:string):Promise<FirebaseDocument[]>{
+    return new Promise(async (resolve, reject)=>{
+      const querySnapshot = await getDocs(collection(this.db, collectionName));
+      resolve(querySnapshot.docs.map<FirebaseDocument>(doc=>{
+        return {id:doc.id, data:doc.data()}}));
+    });
   }
 
-  public subscribeImagesDocument(documentId: string, subject: BehaviorSubject<any>) {
-    const docRef = doc(this.db, FIRESTORE_IMAGES_COLLECTION, documentId);
-    this.unsub = onSnapshot(docRef, (doc) => {
-      subject.next(doc.data());
-    })
-    //subject.next(this.unsub);
-  }
-
-  public removeFirestoreListener(listener: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (listener) {
-        listener();
-        resolve(true);
+  public getDocument(collectionName:string, document:string):Promise<FirebaseDocument>{
+    return new Promise(async (resolve, reject)=>{
+      const docRef = doc(this.db, collectionName, document);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        resolve({id:docSnap.id, data:docSnap.data()});
+      } else {
+        // doc.data() will be undefined in this case
+        reject('document does not exists');
       }
-    })
+    });
   }
 
-  public getImagesDocument(documentId: string): Promise<string | FirestoreImages> {
-    const docRef = doc(this.db, FIRESTORE_IMAGES_COLLECTION, documentId);
-    return new Promise((resolve, reject) => {
-      getDoc(docRef).then(docSnap => resolve(docSnap.data() as FirestoreImages))
-      .catch(err => reject(err))
-    })
+  public getDocumentBy(collectionName:string, field:string, value:any):Promise<FirebaseDocument[]>{
+    return new Promise(async (resolve, reject)=>{
+      const q = query(collection(this.db, collectionName), where(field, "==", value));
+
+      const querySnapshot = await getDocs(q);
+      resolve(querySnapshot.docs.map<FirebaseDocument>(doc=>{
+        return {id:doc.id, data:doc.data()}}));
+    });
   }
+
+  public subscribeToCollection(collectionName, subject: BehaviorSubject<FirebaseDocument[]>):Unsubscribe{
+    return onSnapshot(collection(this.db, collectionName), (snapshot) => {
+      subject.next(snapshot.docs.map<FirebaseDocument>(doc=>{
+        return {id:doc.id, data:doc.data()}}));
+      }, error=>{});
+  }
+  
   public async signOut(signInAnon:boolean=false) {
     try {
       await this.auth.signOut();
@@ -214,6 +221,7 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
       }
     }
   }
+  
   public async connectUserWithEmailAndPassword(email: string, password: string) {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
