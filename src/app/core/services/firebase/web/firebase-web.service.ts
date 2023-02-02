@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { FirebaseDocument, FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
 import { initializeApp,  deleteApp, getApp } from "firebase/app";
 import { setUserId, setUserProperties } from "firebase/analytics";
-import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc, setDoc, query, where, getDocs, Unsubscribe} from "firebase/firestore";
+import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc, setDoc, query, where, getDocs, Unsubscribe, DocumentData} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth, deleteUser, signInAnonymously, signOut, signInWithEmailAndPassword, initializeAuth, indexedDBLocalPersistence } from "firebase/auth";
 import { HttpClientProvider } from "src/app/core";
@@ -113,8 +113,8 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
   public updateDocument(collectionName:string, document:string, data:any):Promise<void>{
     return new Promise(async (resolve,reject)=>{
       const collectionRef = collection(this.db, collectionName);
-      setDoc(doc(collectionRef,document),data).then(docRef => resolve()
-      ).catch(err =>  reject(err));
+      setDoc(doc(collectionRef,document),data).then(() => resolve()
+      ).catch(err => reject(err));
     });
   }
 
@@ -149,11 +149,10 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
         return {id:doc.id, data:doc.data()}}));
     });
   }
-
-  public subscribeToCollection(collectionName, subject: BehaviorSubject<FirebaseDocument[]>):Unsubscribe{
+  
+  public subscribeToCollection(collectionName, subject: BehaviorSubject<any[]>, mapFunction:(el:DocumentData)=>any):Unsubscribe{
     return onSnapshot(collection(this.db, collectionName), (snapshot) => {
-      subject.next(snapshot.docs.map<FirebaseDocument>(doc=>{
-        return {id:doc.id, data:doc.data()}}));
+      subject.next(snapshot.docs.map<any>(doc=>mapFunction(doc)));
       }, error=>{});
   }
   

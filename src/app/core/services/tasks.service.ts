@@ -1,21 +1,38 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { DocumentData } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Task } from 'src/app/core/models/task.model';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
+import { FirebaseService } from './firebase/firebase-service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TasksService {
+export class TasksService implements OnDestroy{
 
   private _tasksSubject:BehaviorSubject<Task[]> = new BehaviorSubject([]);
   public taks$ = this._tasksSubject.asObservable();
-
+  unsubscr;
   constructor(
-    private api:ApiService
+    private api:ApiService,
+    private firebase:FirebaseService
   ) {
-    this.refresh();
+    this.unsubscr = this.firebase.subscribeToCollection('tareas',this._tasksSubject, this.mapTask);
+    //this.refresh();
+  }
+  ngOnDestroy(): void {
+    this.unsubscr();
+  }
+
+  private mapTask(doc:DocumentData){
+    return {
+      id:0,
+      docId:doc.id,
+      name:doc.data.name,
+      durationInSecs:doc.data.durationInSecs,
+      picture:doc.data.picture
+    };
   }
 
   private async refresh(){

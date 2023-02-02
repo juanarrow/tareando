@@ -11,6 +11,7 @@ export interface UserRegister{
 
 export interface User{
     id: number;
+    docId?:string;
     username:string;
     email:string;
     provider:string;

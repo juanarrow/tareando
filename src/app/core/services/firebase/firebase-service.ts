@@ -43,7 +43,7 @@ export abstract class FirebaseService{
   public abstract getDocuments(collectionName:string):Promise<FirebaseDocument[]>;
   public abstract getDocument(collectionName:string, document:string):Promise<FirebaseDocument>;
   public abstract getDocumentBy(collectionName:string, field:string, value:any):Promise<FirebaseDocument[]>;
-  public abstract subscribeToCollection(collectionName, subject: BehaviorSubject<FirebaseDocument[]>):Unsubscribe
+  public abstract subscribeToCollection(collectionName, subject: BehaviorSubject<any[]>, mapFunction:(el:DocumentData)=>any):Unsubscribe
   public abstract setUserAndEmail(uid:string, email:string);
   public abstract createUserWithEmailAndPassword(email:string, password:string);
   public abstract connectUserWithEmailAndPassword(email:string, password:string);

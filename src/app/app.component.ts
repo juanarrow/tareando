@@ -24,7 +24,6 @@ export class AppComponent implements AfterViewInit{
   public labels = [];
   language = 1; // 0 español, 1 inglés
   constructor(
-    private firebase:FirebaseService,
     private translate: TranslateService,
     private locale:LocaleService,
     public user:UserService,
@@ -34,12 +33,6 @@ export class AppComponent implements AfterViewInit{
   }
 
   private async init(){
-    try {
-      await this.firebase.createUserWithEmailAndPassword("jgargom214@gmail.com", "123456.a");  
-    } catch (error) {
-      console.log(error);
-    }
-    
     this.translate. setDefaultLang('en');
   }
   ngAfterViewInit(): void {
