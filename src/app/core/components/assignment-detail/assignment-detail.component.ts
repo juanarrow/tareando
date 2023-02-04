@@ -18,7 +18,7 @@ export class AssignmentDetailComponent implements OnInit {
 
   form:FormGroup;
   mode:"New" | "Edit" = "New";
-  button_text = "";
+
   @Input('assignment') set assignment(assignment:Assignment){
     if(assignment){
       this.form.controls.id.setValue(assignment.id);
@@ -40,7 +40,7 @@ export class AssignmentDetailComponent implements OnInit {
     private translate:TranslateService
   ) { 
     this.form = this.fb.group({
-      id:[null],
+      id:[0],
       taskId:[-1, [Validators.min(1)]],
       personId:[-1, [Validators.min(1)]],
       dateTime:[null, [Validators.required]],
@@ -48,10 +48,6 @@ export class AssignmentDetailComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if(this.mode == "Edit")
-      this.button_text = await lastValueFrom(this.translate.get('assignment.edit'));  
-    else
-      this.button_text = await this.translate.get('assignment.new').toPromise();
 
   }
 

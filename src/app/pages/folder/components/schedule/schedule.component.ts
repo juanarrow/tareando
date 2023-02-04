@@ -43,6 +43,7 @@ export class ScheduleComponent implements OnInit {
         events: tasks.map(async a=>{
           try {
             var task = await this.tasksSvc.getTaskById(a.taskId);  
+            console.log(moment(a.dateTime).toISOString());
             return {
               "title":task.name, 
               "start":moment(a.dateTime).toISOString(), 

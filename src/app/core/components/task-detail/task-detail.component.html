@@ -1,19 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Datos de la tarea</ion-title>
+    <ion-title>{{'task-detail.title' | translate}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="onDismiss(null)">Cerrar</ion-button>
+      <ion-button (click)="onDismiss(null)">{{'modal.close' | translate}}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-img [src]="form.controls.picture.value"></ion-img>
+  <input id="fileLoader" type="file" #fileLoader name="files" title="Load Files" hidden>
+  <ion-img (click)="changePic(fileLoader)" *ngIf="currentImage.value" [src]="currentImage$ | async"></ion-img>
+  <ion-img (click)="changePic(fileLoader)" *ngIf="!currentImage.value" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"></ion-img>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
     <ion-item>
       <ion-label position="floating">
-        Nombre
+        {{'task-detail.name' | translate}}
       </ion-label>
-      <ion-input type="text" placeholder="Introduce el nombre de la tarea" formControlName="name"></ion-input>
+      <ion-input type="text" placeholder="{{'task-detail.name-placeholder' | translate}}" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">
+        {{'task-detail.duration' | translate}}
+      </ion-label>
+      <ion-input type="number" formControlName="durationInSecs"></ion-input>
     </ion-item>
   </form>
 </ion-content>
@@ -21,7 +29,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-center">
-        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
+        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?('modal.edit' | translate):('modal.new' | translate)}}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

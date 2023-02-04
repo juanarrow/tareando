@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Datos de la persona</ion-title>
+    <ion-title>{{'person-detail.title' | translate}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="onDismiss(null)">Cerrar</ion-button>
+      <ion-button (click)="onDismiss(null)">{{'modal.close' | translate}}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -13,21 +13,21 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
     <ion-item>
       <ion-label position="floating">
-        Nombre
+        {{'person-detail.name' | translate}}
       </ion-label>
-      <ion-input type="text" placeholder="Introduce tu nombre" formControlName="name"></ion-input>
+      <ion-input type="text" placeholder="{{'person-detail.name-placeholder' | translate}}" formControlName="first_name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">
-        Apellidos
+        {{'person-detail.surname' | translate}}
       </ion-label>
-      <ion-input type="text" placeholder="Introduce tus apellidos" formControlName="surname"></ion-input>
+      <ion-input type="text" placeholder="{{'person-detail.surname-placeholder' | translate}}" formControlName="last_name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">
-        Nickname
+        {{'person-detail.nickname' | translate}}
       </ion-label>
-      <ion-input type="text" placeholder="Introduce tu apodo" formControlName="nickname"></ion-input>
+      <ion-input type="text" placeholder="{{'person-detail.nickname' | translate}}" formControlName="nickname"></ion-input>
     </ion-item>
   </form>
 </ion-content>
@@ -35,7 +35,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-center">
-        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?"Modificar":"Añadir"}}</ion-button>
+        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?('modal.edit' | translate):('modal.new' | translate)}}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -3,9 +3,9 @@ import { BehaviorSubject } from "rxjs";
 import { FirebaseDocument, FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
 import { initializeApp,  deleteApp, getApp } from "firebase/app";
 import { setUserId, setUserProperties } from "firebase/analytics";
-import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc, setDoc, query, where, getDocs, Unsubscribe} from "firebase/firestore";
+import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc, setDoc, query, where, getDocs, Unsubscribe, DocumentData, deleteDoc} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { createUserWithEmailAndPassword, getAuth, deleteUser, signInAnonymously, signOut, signInWithEmailAndPassword, initializeAuth, indexedDBLocalPersistence } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, deleteUser, signInAnonymously, signOut, signInWithEmailAndPassword, initializeAuth, indexedDBLocalPersistence, UserCredential } from "firebase/auth";
 import { HttpClientProvider } from "src/app/core";
 
 
@@ -110,10 +110,19 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     });
   }
 
+  public createDocumentWithId(collectionName:string, data:any, docId:string):Promise<void>{
+    return new Promise((resolve,reject)=>{
+      const collectionRef = collection(this.db, collectionName);
+      const docRef = doc(this.db, 'usuarios', docId);
+      setDoc(docRef, data).then(docRef => resolve()
+      ).catch(err =>  reject(err));
+    });
+  }
+
   public updateDocument(collectionName:string, document:string, data:any):Promise<void>{
     return new Promise(async (resolve,reject)=>{
       const collectionRef = collection(this.db, collectionName);
-      setDoc(doc(collectionRef,document),data).then(docRef => resolve()
+      updateDoc(doc(collectionRef,document),data).then(docRef => resolve()
       ).catch(err =>  reject(err));
     });
   }
@@ -140,7 +149,7 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     });
   }
 
-  public getDocumentBy(collectionName:string, field:string, value:any):Promise<FirebaseDocument[]>{
+  public getDocumentsBy(collectionName:string, field:string, value:any):Promise<FirebaseDocument[]>{
     return new Promise(async (resolve, reject)=>{
       const q = query(collection(this.db, collectionName), where(field, "==", value));
 
@@ -150,10 +159,21 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     });
   }
 
-  public subscribeToCollection(collectionName, subject: BehaviorSubject<FirebaseDocument[]>):Unsubscribe{
+  public deleteDocument(collectionName:string, docId:string):Promise<void>{
+    return new Promise(async (resolve, reject)=>{
+      try {
+        await deleteDoc(doc(this.db, collectionName, docId));  
+      } catch (error) {
+        reject(error);
+      }
+      
+
+    });
+  }
+
+  public subscribeToCollection(collectionName, subject: BehaviorSubject<any[]>, mapFunction:(el:DocumentData)=>any):Unsubscribe{
     return onSnapshot(collection(this.db, collectionName), (snapshot) => {
-      subject.next(snapshot.docs.map<FirebaseDocument>(doc=>{
-        return {id:doc.id, data:doc.data()}}));
+      subject.next(snapshot.docs.map<any>(doc=>mapFunction(doc)));
       }, error=>{});
   }
   
@@ -197,10 +217,9 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     return response;
   }
 
-  public async createUserWithEmailAndPassword(email:string, password:string){
+  public async createUserWithEmailAndPassword(email:string, password:string):Promise<UserCredential>{
     try {
-      await createUserWithEmailAndPassword(this.auth, email, password);
-      await signInWithEmailAndPassword(this.auth, email, password);
+      return createUserWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
       switch (error.code) {
         case 'auth/email-already-in-use':
@@ -222,12 +241,8 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     }
   }
   
-  public async connectUserWithEmailAndPassword(email: string, password: string) {
-    try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-    } catch (error) {
-      
-    }    
+  public async connectUserWithEmailAndPassword(email: string, password: string):Promise<UserCredential> {
+      return signInWithEmailAndPassword(this.auth, email, password);
   }
 
   public deleteUser():Promise<void>{

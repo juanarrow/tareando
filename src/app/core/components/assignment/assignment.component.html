@@ -14,13 +14,13 @@
     <ion-button class="item-expanded" *ngIf="!isLowResolution()" slot="end" fill="clear" (click)="onEditClick(sliding)">
       <div class="vertical">
         <ion-icon name="create" ></ion-icon>
-        {{'assignment.edit' | translate | uppercase}}
+        {{'modal.edit' | translate | uppercase}}
       </div>
     </ion-button>
     <ion-button class="item-expanded" *ngIf="!isLowResolution()" slot="end" fill="clear" color="danger" (click)="onDeleteClick(sliding)">
       <div class="vertical">
         <ion-icon name="trash" ></ion-icon>
-        {{'Borrar' | uppercase}}
+        {{'modal.delete' | translate | uppercase}}
       </div>
     </ion-button>
   </ion-item>
@@ -28,11 +28,11 @@
   <ion-item-options>
     <ion-item-option (click)="onEditClick(sliding)">
       <ion-icon slot="top" name="create" ></ion-icon>
-      {{'Editar' | uppercase}}
+      {{'modal.edit' | translate | uppercase}}
     </ion-item-option>
     <ion-item-option (click)="onDeleteClick(sliding)" color="danger">
       <ion-icon slot="top" name="trash" ></ion-icon>
-      {{'Borrar' | uppercase}}
+      {{'modal.delete' | translate | uppercase}}
     </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>

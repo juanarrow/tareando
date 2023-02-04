@@ -10,9 +10,15 @@ import { Person, PeopleService } from 'src/app/core';
 })
 export class PersonComponent implements OnInit {
 
+  private _person:Person;
   @Output() onEdit = new EventEmitter;
   @Output() onDelete = new EventEmitter;
-  @Input() person:Person;
+  @Input() set person(p:Person){
+    this._person = p;
+  }
+  get person(){
+    return this._person;
+  }
   isLowResolution:()=>boolean = lowres;
   constructor(
     private peopleSvc:PeopleService

@@ -73,7 +73,7 @@ export class PeopleComponent implements OnInit {
           text: 'Borrar',
           role: 'confirm',
           handler: () => {
-            this.peopleSvc.deletePersonById(person.id);
+            this.peopleSvc.deletePerson(person);
           },
         },
       ],

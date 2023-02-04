@@ -1,10 +1,26 @@
 {
+    "modal":{
+        "close":"Cerrar",
+        "edit":"Modificar",
+        "new":"Nuevo",
+        "delete":"Borrar"
+    },
+    "folder":{
+        "home":"Inicio",
+        "people":"Usuarios",
+        "tasks":"Tareas",
+        "assignments":"Asignaciones",
+        "taskpane":"Panel de tareas"
+    },
     "home":{
-        "title":"Gestión de tareas",
-        "langButton":"Cambia idioma"
+        "title":"Tareando",
+        "welcome":"Bienvenido",
+        "langButton":"Cambia idioma",
+        "close":"Cerrar sesión"
     },
     "assignment":{
-        "edit":"Editar"
+        "edit":"Editar",
+        "new":"Enviar"
     },
     "validators":{
         "passwordMatch": "Las contraseñas no coinciden",
@@ -26,5 +42,26 @@
         "password":"Contraseña",
         "confirm_password":"Repita contraseña",
         "send":"Enviar"
+    },
+    "assignment-detail":{
+        "title":"Detalle de la asignación",
+        "person":"Persona que la realiza",
+        "tarea":"Tarea a realizar",
+        "date":"Fecha y hora"
+    },
+    "person-detail":{
+        "title":"Datos de la persona",
+        "name":"Nombre",
+        "name-placeholder":"Introduce el nombre",
+        "surname":"Apellidos",
+        "surnname-placeholder":"Introduce los apellidos",
+        "nickname":"Apodo",
+        "nickname-placeholder":"Introduce el apodo"
+    },
+    "task-detail":{
+        "title":"Datos de la tarea",
+        "name":"Nombre",
+        "name-placeholder":"Introduce un nombre para la tarea",
+        "duration":"Duración"
     }
 }

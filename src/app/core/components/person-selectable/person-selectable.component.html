@@ -6,7 +6,7 @@
           <img *ngIf="!selectedPerson?.picture" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
           <img *ngIf="selectedPerson?.picture" alt="Person picture" [src]="selectedPerson?.picture" />
         </ion-avatar>
-        <ion-label>{{selectedPerson?.surname}}, {{selectedPerson?.name}}</ion-label>
+        <ion-label>{{selectedPerson?.last_name}}, {{selectedPerson?.first_name}}</ion-label>
       </ng-container>
       <ion-label *ngIf="!selectedPerson">Selecciona una persona</ion-label>
     </ion-item>
@@ -17,7 +17,7 @@
             <img *ngIf="!person.picture" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
             <img *ngIf="person.picture" alt="Person picture" [src]="person.picture" />
           </ion-avatar>
-          <ion-label>{{person.surname}}, {{person.name}}</ion-label>
+          <ion-label>{{person.last_name}}, {{person.first_name}}</ion-label>
         </ion-item>
       </ion-list>
     </div>

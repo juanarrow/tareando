@@ -18,8 +18,9 @@ export class PersonDetailComponent implements OnInit {
   @Input('person') set person(person:Person){
     if(person){
       this.form.controls.id.setValue(person.id);
-      this.form.controls.name.setValue(person.name);
-      this.form.controls.surname.setValue(person.surname);
+      this.form.controls.docId.setValue(person.docId);
+      this.form.controls.first_name.setValue(person.first_name);
+      this.form.controls.last_name.setValue(person.last_name);
       this.form.controls.nickname.setValue(person.nickname);
       this.form.controls.picture.setValue(person.picture);
       if(person.picture)
@@ -37,8 +38,9 @@ export class PersonDetailComponent implements OnInit {
   ) { 
     this.form = this.fb.group({
       id:[null],
-      name:['', [Validators.required]],
-      surname:['', [Validators.required]],
+      docId:[''],
+      first_name:['', [Validators.required]],
+      last_name:['', [Validators.required]],
       nickname:['', [Validators.required]],
       picture:[''],
       pictureFile:[null]

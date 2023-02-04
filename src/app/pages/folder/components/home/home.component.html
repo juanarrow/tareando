@@ -1,2 +1,2 @@
-<h1>Bienvenido</h1>
-<h2>{{user.getUser()?.first_name}} {{user.getUser()?.last_name}}</h2>
+<h1>{{"home.welcome" | translate}}</h1>
+<h2>{{(user.user$ | async).first_name}} {{(user.user$ | async).last_name}}</h2>

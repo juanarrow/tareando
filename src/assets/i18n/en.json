@@ -1,10 +1,22 @@
 {
-    "home":{
-        "title":"Task Management",
-        "langButton":"Change Language"
+    "modal":{
+        "close":"Close",
+        "edit":"Edit",
+        "new":"New",
+        "delete":"Delete"
     },
-    "assignment":{
-        "edit":"Edit"
+    "folder":{
+        "home":"Home",
+        "people":"Users",
+        "tasks":"Tasks",
+        "assignments":"Assignments",
+        "taskpane":"Tasks pane"
+    },
+    "home":{
+        "title":"Tareando",
+        "welcome":"Welcome",
+        "langButton":"Change Language",
+        "close":"Sign out"
     },
     "validators":{
         "passwordMatch": "Passwords do not match",
@@ -26,5 +38,26 @@
         "password":"Password",
         "confirm_password":"Repeat password",
         "send":"Send"
+    },
+    "assignment-detail":{
+        "title":"Assignment detail",
+        "person":"Person who performs it",
+        "tarea":"Task to perfom",
+        "date":"Date and Time"
+    },
+    "person-detail":{
+        "title":"Person detail",
+        "name":"Name",
+        "name-placeholder":"Type the name",
+        "surname":"Surname",
+        "surnname-placeholder":"Type the surname",
+        "nickname":"Nickname",
+        "nickname-placeholder":"Type the nickname"
+    },
+    "task-detail":{
+        "title":"Task detail",
+        "name":"Name",
+        "name-placeholder":"Type a name for the task",
+        "duration":"Duration"
     }
 }

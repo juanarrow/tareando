@@ -15,11 +15,11 @@ import { UserService } from './core/services/user.service';
 export class AppComponent implements AfterViewInit{
   
   public appPages = [
-    { title: 'Home', url: '/folder/Home', icon: 'home'},
-    { title: 'People', url: '/folder/People', icon: 'people' },
-    { title: 'Tasks', url: '/folder/Tasks', icon: 'file-tray-full' },
-    { title: 'Assignments', url: '/folder/Assignments', icon: 'list' },
-    { title: 'Task pane', url: '/folder/Task Panel', icon: 'layers' },
+    { title: 'home', url: '/folder/Home', icon: 'home'},
+    { title: 'people', url: '/folder/People', icon: 'people' },
+    { title: 'tasks', url: '/folder/Tasks', icon: 'file-tray-full' },
+    { title: 'assignments', url: '/folder/Assignments', icon: 'list' },
+    { title: 'taskpane', url: '/folder/Task Panel', icon: 'layers' },
   ];
   public labels = [];
   language = 1; // 0 español, 1 inglés
@@ -34,12 +34,6 @@ export class AppComponent implements AfterViewInit{
   }
 
   private async init(){
-    try {
-      await this.firebase.createUserWithEmailAndPassword("jgargom214@gmail.com", "123456.a");  
-    } catch (error) {
-      console.log(error);
-    }
-    
     this.translate. setDefaultLang('en');
   }
   ngAfterViewInit(): void {

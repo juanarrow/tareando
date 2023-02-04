@@ -21,7 +21,7 @@ export class TasksComponent implements OnInit {
 
   ngOnInit() {}
   getTasks(){
-    return this.tasksSvc.taks$;
+    return this.tasksSvc.tasks$;
   }
 
   async presentTaskForm(task:Task){
@@ -69,7 +69,7 @@ export class TasksComponent implements OnInit {
           text: 'Borrar',
           role: 'confirm',
           handler: () => {
-            this.tasksSvc.deleteTaskById(task.id);
+            this.tasksSvc.deleteTask(task);
           },
         },
       ],
@@ -101,6 +101,7 @@ export class TasksComponent implements OnInit {
   }
   
   async onDeleteTask(task){
+    return;
     if((await this.assignmentsSvc.getAssignmentsByTaskId(task.id)).length==0)
       this.onDeleteAlert(task);
     else

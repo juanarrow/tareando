@@ -55,7 +55,7 @@ export class TaskSelectableComponent implements OnInit, ControlValueAccessor {
   onTaskClicked(task:Task, accordion:IonAccordionGroup){
     this.selectedTask = task;
     accordion.value='';
-    this.propagateChange(this.selectedTask.id);
+    this.propagateChange(this.selectedTask.docId);
   }
 
 }

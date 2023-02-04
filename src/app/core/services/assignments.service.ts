@@ -2,8 +2,10 @@ import * as moment from 'moment-timezone';
 
 import { Injectable } from '@angular/core';
 import { Assignment } from '../models/assignment.model';
-import { BehaviorSubject, lastValueFrom, map, tap } from 'rxjs';
+import { BehaviorSubject, from, lastValueFrom, map, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
+import { FirebaseService } from './firebase/firebase-service';
+import { DocumentData } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -16,31 +18,27 @@ export class AssignmentsService {
   public assignments$ = this._assignmentsSubject.asObservable();
 
 
+  unsubscr;
   constructor(
-    private api:ApiService
+    private api:ApiService,
+    private firebase:FirebaseService
   ) {
-    this.refresh();
+    this.unsubscr = this.firebase.subscribeToCollection('asignaciones',this._assignmentsSubject, this.mapAssignment);
   }
 
-  private async refresh(){
-    this.api.get('/api/assignments?populate=task_id,person_id').subscribe({
-      next:response=>{
-        console.log(response);
-        var array:Assignment[] = (response.data as Array<any>).map<Assignment>(assignment=>{
-          return {id:assignment.id, 
-                  personId:assignment.attributes.person_id.data.id, 
-                  taskId:assignment.attributes.task_id.data.id,
-                  dateTime:assignment.attributes.dateTime,
-                  createdAt:assignment.attributes.createdAt
-          };
-        });
-        this._assignmentsSubject.next(array);
-        
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
+  ngOnDestroy(): void {
+    this.unsubscr();
+  }
+
+  private mapAssignment(doc:DocumentData){
+    return {
+      id:0,
+      docId:doc.id,
+      personId:doc.data().personId,
+      taskId:doc.data().taskId,
+      createdAt:doc.data().createdAt,
+      dateTime:doc.data().dateTime,
+    };
   }
 
 
@@ -49,116 +47,75 @@ export class AssignmentsService {
     return this._assignmentsSubject.value;
   }
 
-  getAssignmentById(id:number){
-    return new Promise<Assignment>((resolve, reject)=>{
-      this.api.get(`/api/assignments/${id}?populate=person_id, task_id`).subscribe({
-        next:data=>{
-          resolve({
-            id:data.data.data.id,
-            personId:data.data.attributes.person_id.id,
-            taskId:data.data.attributes.task_id.id,
-            dateTime:data.data.attributes.dateTime,
-            createdAt:data.data.attributes.createdAt
-          });
-          
-        },
-        error:err=>{
-          reject(err);
-        }
-      });
+  getAssignmentById(id:string){
+    return new Promise<Assignment>(async (resolve, reject)=>{
+      try {
+        var response = (await this.firebase.getDocument('asignaciones', id));
+        resolve({
+          id:0,
+          docId:response.id,
+          personId:response.data.personId,
+          taskId:response.data.taskId,
+          createdAt:response.data.createdAt,
+          dateTime:response.data.dateTime
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
-  getAssignmentsByTaskId(taskId:number):Promise<Assignment[]>{
-    return new Promise<Assignment[]>((resolve, reject)=>{
-      this.api.get( `/api/assignments?task_id=${taskId}&populate=task_id,person_id`).subscribe({
-        next:response=>{
-          console.log(response);
-          var array:Assignment[] = (response.data as Array<any>).map<Assignment>(assignment=>{
-            return {id:assignment.id, 
-                    personId:assignment.attributes.person_id.data.id, 
-                    taskId:assignment.attributes.task_id.data.id,
-                    dateTime:assignment.attributes.dateTime,
-                    createdAt:assignment.attributes.createdAt
-            };
-          });
-          resolve(array);
-        },
-        error:err=>{
-          reject(err);
-          console.log(err);
-        }
-      });
+  getAssignmentsBy(field, value){
+    return new Promise<Assignment[]>(async (resolve, reject)=>{
+      try {
+        var assignments = (await this.firebase.getDocumentsBy('asignaciones', field, value)).map<Assignment>(doc=>{
+          return {
+            id:0,
+            docId:doc.id,
+            personId:doc.data.personId,
+            taskId:doc.data.taskId,
+            createdAt:doc.data.createdAt,
+            dateTime:doc.data.dateTime
+          }
+        });
+        resolve(assignments);  
+      } catch (error) {
+        reject(error);
+      }
     });
+  }
+
+  getAssignmentsByTaskId(taskId:string):Promise<Assignment[]>{
+    return this.getAssignmentsBy('taskId', taskId);
   }
 
   
-  getAssignmentsByPersonId(personId:number):Promise<Assignment[]>{    
-    return new Promise<Assignment[]>((resolve, reject)=>{
-      this.api.get( `/api/assignments?person_id=${personId}&populate=task_id,person_id`).subscribe({
-        next:response=>{
-          console.log(response);
-          var array:Assignment[] = (response.data as Array<any>).map<Assignment>(assignment=>{
-            return {id:assignment.id, 
-                    personId:assignment.attributes.person_id.data.id, 
-                    taskId:assignment.attributes.task_id.data.id,
-                    dateTime:assignment.attributes.dateTime,
-                    createdAt:assignment.attributes.createdAt
-            };
-          });
-          resolve(array);
-        },
-        error:err=>{
-          reject(err);
-          console.log(err);
-        }
-      });
-    });
+  getAssignmentsByPersonId(personId:string):Promise<Assignment[]>{   
+    return this.getAssignmentsBy('personId', personId);
   }
 
-  deleteAssignmentById(id:number){
-    this.api.delete(`/api/assignments/${id}`).subscribe({
-      next:data=>{
-        this.refresh();
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
+  async deleteAssignmentById(id:string){
+    try {
+      await this.firebase.deleteDocument('asignaciones', id);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  addAssignment(assignment:Assignment){
-    this.api.post(`/api/assignments`,{
-      data:{
-        person_id:assignment.personId,
-        task_id:assignment.taskId,
-        dateTime:assignment.dateTime
-      }
-    }).subscribe({
-      next:data=>{
-        this.refresh();
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
+   async addAssignment(assignment:Assignment){
+    try {
+      await this.firebase.createDocument('asignaciones', assignment);  
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  updateAssignment(assignment:Assignment){
-    this.api.put(`/api/assignments/${assignment.id}`,{
-      data:{
-        person_id:assignment.personId,
-        task_id:assignment.taskId,
-        dateTime:assignment.dateTime
-      }
-    }).subscribe({
-      next:data=>{
-        this.refresh(); 
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
+  async updateAssignment(assignment:Assignment){
+    try {
+      await this.firebase.updateDocument('asignaciones', assignment.docId, assignment);
+    } catch (error) {
+      console.log(error);
+    }
     
   }
 }

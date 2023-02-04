@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { DocumentData } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Task } from 'src/app/core/models/task.model';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
+import { FirebaseService } from './firebase/firebase-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,102 +12,89 @@ import { ApiService } from './api.service';
 export class TasksService {
 
   private _tasksSubject:BehaviorSubject<Task[]> = new BehaviorSubject([]);
-  public taks$ = this._tasksSubject.asObservable();
+  public tasks$ = this._tasksSubject.asObservable();
 
+  unsubscr;
   constructor(
-    private api:ApiService
+    private api:ApiService,
+    private firebase:FirebaseService
   ) {
-    this.refresh();
+    this.unsubscr = this.firebase.subscribeToCollection('tareas',this._tasksSubject, this.mapTask);
   }
 
-  private async refresh(){
-    this.api.get('/api/tasks?populate=picture').subscribe({
-      next:response=>{
-        console.log(response);
-        var array:Task[] = (response.data as Array<any>).map<Task>(task=>{
-          return {id:task.id, 
-                  name:task.attributes.name, 
-                  durationInSecs:task.attributes.durationInSecs,
-                  picture:task.attributes.picture.data?
-                          environment.api_url+task.attributes.picture.data.attributes.url:
-                          "" 
-          };
-        });
-        this._tasksSubject.next(array);
-        
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
+  ngOnDestroy(): void {
+    this.unsubscr();
+  }
+
+  private mapTask(doc:DocumentData){
+    return {
+      id:0,
+      docId:doc.id,
+      name:doc.data().name,
+      durationInSecs:doc.data().durationInSecs,
+      picture:doc.data().picture
+    };
   }
 
   getTasks(){
     return this._tasksSubject.value;
   }
 
-  getTaskById(id:number):Promise<Task>{
-    return new Promise<Task>((resolve, reject)=>{
-      this.api.get(`/api/tasks/${id}?populate=picture`).subscribe({
-        next:data=>{
-          resolve({
-            id:data.data.id,
-            name:data.data.attributes.name,
-            durationInSecs:data.data.attributes.durationInSecs,
-            picture:data.data.attributes.picture.data?
-                    environment.api_url+data.data.attributes.picture.data.attributes.url:
-                    ""
-          });
-          
-        },
-        error:err=>{
-          reject(err);
-        }
-      });
-    });
-  }
-
-  deleteTaskById(id:number){
-    this.api.delete(`/api/tasks/${id}`).subscribe({
-      next:data=>{
-        this.refresh();
-      },
-      error:err=>{
-        console.log(err);
+  getTaskById(id:string):Promise<Task>{
+    return new Promise<Task>(async (resolve, reject)=>{
+      try {
+        var task = (await this.firebase.getDocument('tareas', id));
+        resolve({
+          id:0,
+          docId:task.id,
+          name:task.data.name,
+          durationInSecs:task.data.durationInSecs,
+          picture:task.data.picture
+        });  
+      } catch (error) {
+        reject(error);
       }
     });
   }
 
-  addTask(task:Task){
-    this.api.post(`/api/tasks`,{
-      data:{
-        name:task.name,
-        durationInSecs:task.durationInSecs,
-      }
-    }).subscribe({
-      next:data=>{
-        this.refresh();
-      },
-      error:err=>{
-        console.log(err);
+  async deleteTask(task:Task){
+    await this.firebase.deleteDocument('tareas', task.docId);
+  }
+
+  async addTask(task:Task){
+    try {
+      await this.firebase.createDocument('tareas', task);  
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  uploadImage(file):Promise<any>{  
+    return new Promise(async (resolve, reject)=>{
+      try {
+        const data = await this.firebase.imageUpload(file);  
+        resolve(data);
+      } catch (error) {
+        resolve(error);
       }
     });
   }
 
-  updateTask(task:Task){
-    this.api.put(`/api/tasks/${task.id}`,{
-      data:{
-        name:task.name,
-        durationInSecs:task.durationInSecs,
-      }
-    }).subscribe({
-      next:data=>{
-        this.refresh(); 
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
-    
+  async updateTask(task:Task){
+    var _task = {
+      id:0,
+      docId:task.docId,
+      name:task.name,
+      durationInSecs:task.durationInSecs,
+    };
+    if(task['pictureFile']){
+      var response = await this.uploadImage(task['pictureFile']);
+      _task['picture'] = response.image;
+    }
+    try {
+      await this.firebase.updateDocument('tareas', _task.docId, _task);  
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Datos de la persona</ion-title>
+    <ion-title>{{'assignment-detail.title' | translate}}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onDismiss(null)">Cerrar</ion-button>
     </ion-buttons>
@@ -11,19 +11,19 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
     <ion-item-divider>
       <ion-label>
-       Persona que la realiza
+       {{'assignment-detail.person' | translate}}
       </ion-label>
     </ion-item-divider>
     <app-task-selectable formControlName="taskId"></app-task-selectable>
     <ion-item-divider>
       <ion-label>
-        Tarea a realizar
+        {{'assignment-detail.task' | translate}}
       </ion-label>
     </ion-item-divider>
     <app-person-selectable formControlName="personId"></app-person-selectable>
     <ion-item-divider>
       <ion-label>
-       Fecha y hora
+        {{'assignment-detail.date' | translate}}
       </ion-label>
     </ion-item-divider>
     <app-date-time-selectable formControlName="dateTime"></app-date-time-selectable>
@@ -33,7 +33,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-center">
-        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{button_text}}</ion-button>
+        <ion-button [disabled]="!form.valid" (click)="onSubmit()">{{mode=="Edit"?('modal.edit' | translate):('modal.new' | translate)}}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
