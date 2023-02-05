@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Person } from 'src/app/core/models/person.model';
+import { PhotoItem, PhotoService } from '../../services/photo.service';
+import { PlatformService } from '../../services/platform.service';
 
 @Component({
   selector: 'app-person-detail',
@@ -11,6 +13,7 @@ import { Person } from 'src/app/core/models/person.model';
 })
 export class PersonDetailComponent implements OnInit {
 
+  
   form:FormGroup;
   mode:"New" | "Edit" = "New";
   currentImage = new BehaviorSubject<string>("");
@@ -32,6 +35,8 @@ export class PersonDetailComponent implements OnInit {
   
 
   constructor(
+    public platform:PlatformService,
+    private photoSvc:PhotoService,
     private fb:FormBuilder,
     private modal:ModalController,
     private cdr:ChangeDetectorRef
@@ -61,22 +66,11 @@ export class PersonDetailComponent implements OnInit {
   }
 
   
-  changePic(fileLoader){
-    fileLoader.click();
-    var that = this;
-    fileLoader.onchange = function () {
-      var file = fileLoader.files[0];
-      var reader = new FileReader();
-      reader.onload = () => {   
-        that.currentImage.next(reader.result as string);
-        that.cdr.detectChanges();
-        that.form.controls.pictureFile.setValue(file);
-      };
-      reader.onerror = (error) =>{
-        console.log(error);
-      }
-      reader.readAsDataURL(file);
-    }
+  async changePic(fileLoader:HTMLInputElement, mode:'library' | 'camera' | 'file'){
+    var item:PhotoItem = await this.photoSvc.getPicture(mode, fileLoader);
+    this.currentImage.next(item.base64);
+    this.cdr.detectChanges();
+    this.form.controls.pictureFile.setValue(item.blob);
   }
 
 }

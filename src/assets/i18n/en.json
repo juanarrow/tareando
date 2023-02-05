@@ -1,4 +1,10 @@
 {
+    "change-picture":{
+        "title":"Change image",
+        "library":"From gallery",
+        "camera":"From camera",
+        "file":"From your computer"
+    },
     "modal":{
         "close":"Close",
         "edit":"Edit",

@@ -8,8 +8,30 @@
 </ion-header>
 <ion-content class="ion-padding">
   <input id="fileLoader" type="file" #fileLoader name="files" title="Load Files" hidden>
-  <ion-img (click)="changePic(fileLoader)" *ngIf="currentImage.value" [src]="currentImage$ | async"></ion-img>
-  <ion-img (click)="changePic(fileLoader)" *ngIf="!currentImage.value" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"></ion-img>
+  <ion-img  *ngIf="currentImage.value" [src]="currentImage$ | async"></ion-img>
+  <ion-img *ngIf="!currentImage.value" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"></ion-img>
+  <ion-button expand="full" id="picture-button">{{'change-picture.title' | translate}}</ion-button>
+  <ion-popover style="width:100%" trigger="picture-button" [dismissOnSelect]="true">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <h2>{{'change-picture.title' | translate}}</h2>
+        <ion-list>
+          <ion-item lines="inset" *ngIf="!(platform.isNative$ | async)" (click)="changePic(fileLoader, 'file')" [button]="true" [detail]="false">
+            <ion-icon slot="start" name="document-outline"></ion-icon>
+            <ion-label>{{'change-picture.file' | translate}}</ion-label>
+          </ion-item>
+          <ion-item lines="inset" *ngIf="platform.isNative$ | async" (click)="changePic(fileLoader, 'library')" [button]="true" [detail]="false">
+            <ion-icon slot="start" name="images-outline"></ion-icon>
+            <ion-label>{{'change-picture.library' | translate}}</ion-label>
+          </ion-item>
+          <ion-item lines="inset" *ngIf="platform.isNative$ | async" (click)="changePic(fileLoader, 'camera')" [button]="true" [detail]="false">
+            <ion-icon slot="start" name="camera-outline"></ion-icon>
+            <ion-label>{{'change-picture.camera' | translate}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
     <ion-item>
       <ion-label position="floating">

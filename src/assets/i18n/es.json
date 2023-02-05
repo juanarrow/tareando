@@ -1,4 +1,10 @@
 {
+    "change-picture":{
+        "title":"Cambiar imagen",
+        "library":"Desde la galería",
+        "camera":"Desde la cámara",
+        "file":"Desde tu equipo"
+    },
     "modal":{
         "close":"Cerrar",
         "edit":"Modificar",

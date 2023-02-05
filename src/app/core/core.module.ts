@@ -15,6 +15,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { createTranslateLoader } from './utils/translate';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Drivers } from '@ionic/storage';
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 registerLocaleData(en);
 registerLocaleData(es);
@@ -73,7 +75,9 @@ registerLocaleData(es);
     {
       provide: LOCALE_ID,
       useValue: 'es'
-    }
+    },
+    Camera,
+    File
   ]
 })
 export class CoreModule { }

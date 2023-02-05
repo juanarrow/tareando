@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Task } from 'src/app/core/models/task.model';
+import { PhotoItem, PhotoService } from '../../services/photo.service';
+import { PlatformService } from '../../services/platform.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -31,6 +33,8 @@ export class TaskDetailComponent implements OnInit {
   
 
   constructor(
+    public platform:PlatformService,
+    private photoSvc:PhotoService,
     private cdr:ChangeDetectorRef,
     private fb:FormBuilder,
     private modal:ModalController
@@ -58,23 +62,11 @@ export class TaskDetailComponent implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  changePic(fileLoader){
-    fileLoader.click();
-    var that = this;
-    fileLoader.onchange = function () {
-      var file = fileLoader.files[0];
-      var reader = new FileReader();
-      reader.onload = () => {   
-        that.currentImage.next(reader.result as string);
-        that.cdr.detectChanges();
-        that.form.controls.pictureFile.setValue(file);
-      };
-      reader.onerror = (error) =>{
-        console.log(error);
-      }
-      reader.readAsDataURL(file);
-    }
+  async changePic(fileLoader:HTMLInputElement, mode:'library' | 'camera' | 'file'){
+    var item:PhotoItem = await this.photoSvc.getPicture(mode, fileLoader);
+    this.currentImage.next(item.base64);
+    this.cdr.detectChanges();
+    this.form.controls.pictureFile.setValue(item.blob);
   }
-
 }
 
