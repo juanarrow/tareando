@@ -101,8 +101,8 @@ export class TasksComponent implements OnInit {
   }
   
   async onDeleteTask(task){
-    return;
-    if((await this.assignmentsSvc.getAssignmentsByTaskId(task.id)).length==0)
+    
+    if((await this.assignmentsSvc.getAssignmentsByTaskId(task.docId)).length==0)
       this.onDeleteAlert(task);
     else
       this.onTaskExistsAlert(task);
