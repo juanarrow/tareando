@@ -62,8 +62,18 @@ export class TasksService {
   }
 
   async addTask(task:Task){
+    var _task = {
+      id:0,
+      docId:task.docId,
+      name:task.name,
+      durationInSecs:task.durationInSecs,
+    };
+    if(task['pictureFile']){
+      var response = await this.uploadImage(task['pictureFile']);
+      _task['picture'] = response.image;
+    }
     try {
-      await this.firebase.createDocument('tareas', task);  
+      await this.firebase.createDocument('tareas', _task);  
     } catch (error) {
       console.log(error);
     }

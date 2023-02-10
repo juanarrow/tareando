@@ -70,8 +70,18 @@ export class PeopleService{
   }
 
   async addPerson(person:Person){
+    var _person = {
+      docId:person.docId,
+      first_name:person.first_name,
+      last_name:person.last_name,
+      nickname:person.nickname
+    };
+    if(person['pictureFile']){
+      var response = await this.uploadImage(person['pictureFile']);
+      _person['picture'] = response.image;
+    }
     try {
-      await this.firebase.createDocument('usuarios', person);  
+      await this.firebase.createDocument('usuarios', _person);  
     } catch (error) {
       console.log(error);
     }
