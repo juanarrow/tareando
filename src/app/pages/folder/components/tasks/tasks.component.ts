@@ -108,4 +108,8 @@ export class TasksComponent implements OnInit {
       this.onTaskExistsAlert(task);
   }
 
+  async onExport(){
+    this.tasksSvc.writeToFile();
+  }
+
 }

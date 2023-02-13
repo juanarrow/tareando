@@ -1,3 +1,6 @@
 <ion-list>
+  <ion-item>
+    <ion-button (click)="onExport()">{{'modal.export' | translate}}</ion-button>
+  </ion-item>
   <app-task *ngFor="let task of (getTasks() | async)" [task]="task" (onEdit)="onEditTask($event)" (onDelete)="onDeleteTask($event)"></app-task>
 </ion-list>

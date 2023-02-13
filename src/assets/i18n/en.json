@@ -9,7 +9,8 @@
         "close":"Close",
         "edit":"Edit",
         "new":"New",
-        "delete":"Delete"
+        "delete":"Delete",
+        "export":"Export"
     },
     "folder":{
         "home":"Home",

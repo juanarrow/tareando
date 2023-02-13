@@ -27,5 +27,4 @@ export class TaskComponent implements OnInit {
     slide.close();
     this.onDelete.emit(this.task);
   }
-
 }

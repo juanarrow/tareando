@@ -9,7 +9,8 @@
         "close":"Cerrar",
         "edit":"Modificar",
         "new":"Nuevo",
-        "delete":"Borrar"
+        "delete":"Borrar",
+        "export":"Exportar"
     },
     "folder":{
         "home":"Inicio",
