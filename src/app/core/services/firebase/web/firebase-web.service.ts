@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { FirebaseDocument, FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
+import { FileUploaded, FirebaseDocument, FirebaseService, FIRESTORAGE_PREFIX_PATH, FirestoreImages, FIRESTORE_IMAGES_COLLECTION } from "../firebase-service";
 import { initializeApp,  deleteApp, getApp } from "firebase/app";
 import { setUserId, setUserProperties } from "firebase/analytics";
 import { getFirestore, addDoc, collection, updateDoc, doc, onSnapshot, getDoc, setDoc, query, where, getDocs, Unsubscribe, DocumentData, deleteDoc} from "firebase/firestore";
@@ -48,7 +48,7 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
     });
   }
 
-  public imageUpload(blob: Blob): Promise<any> {
+  public fileUpload(blob: Blob, mimeType:string, prefix:string, extension:string):Promise<FileUploaded>{
     return new Promise(async (resolve, reject) => {
       var freeConnection = false;
       if(this.auth.currentUser==null){
@@ -60,10 +60,10 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
           reject(error);
         }
       }
-      const path = FIRESTORAGE_PREFIX_PATH+"/"+Date.now() + '.jpg';
+      const path = FIRESTORAGE_PREFIX_PATH+"/"+prefix+"-"+Date.now() + extension;
       const storageRef = ref(this.webStorage, path);
       const metadata = {
-        contentType: 'image/jpeg',
+        contentType: mimeType,
       };
       uploadBytes(storageRef, blob).then(async (snapshot) => {
         getDownloadURL(storageRef).then(async downloadURL => {
@@ -71,7 +71,7 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
               await signOut(this.auth);
           resolve({
             path,
-            image: downloadURL,
+            file: downloadURL,
           });
         }).catch(async error=>{
           if(freeConnection)
@@ -84,6 +84,10 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
         reject(error);
       });
     });
+  }
+
+  public imageUpload(blob: Blob): Promise<any> {
+    return this.fileUpload(blob,'image/jpeg', 'image', ".jpg");
   }
 
   ngOnDestroy(): void {

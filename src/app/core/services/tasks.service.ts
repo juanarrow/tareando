@@ -4,8 +4,10 @@ import { BehaviorSubject } from 'rxjs';
 import { Task } from 'src/app/core/models/task.model';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
-import { FirebaseService } from './firebase/firebase-service';
+import { FileUploaded, FirebaseService } from './firebase/firebase-service';
 import { File } from '@awesome-cordova-plugins/file/ngx'
+import { Platform } from '@ionic/angular';
+import { blobToBase64, dataURLtoBlob } from '../utils/blobs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ export class TasksService {
   unsubscr;
   constructor(
     private api:ApiService,
+    private platform:Platform,
     private firebase:FirebaseService,
     private file:File
   ) {
@@ -100,8 +103,8 @@ export class TasksService {
       durationInSecs:task.durationInSecs,
     };
     if(task['pictureFile']){
-      var response = await this.uploadImage(task['pictureFile']);
-      _task['picture'] = response.image;
+      var response:FileUploaded = await this.uploadImage(task['pictureFile']);
+      _task['picture'] = response.file;
     }
     try {
       await this.firebase.updateDocument('tareas', _task.docId, _task);  
@@ -111,24 +114,8 @@ export class TasksService {
   }
 
   async writeToFile(){
-    if(true){
-      var textFile;
-      var data = new Blob([JSON.stringify(this._tasksSubject.value)], {type: 'text/plain'});
-  
-      // If we are replacing a previously generated file we need to
-      // manually revoke the object URL to avoid memory leaks.
-      if (textFile !== null) {
-        window.URL.revokeObjectURL(textFile);
-      }
-  
-      textFile = window.URL.createObjectURL(data);
-      const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
-      a.href = textFile;
-      a.download = 'tasks'+(new Date())+".json";
-      document.body.appendChild(a);
-      a.click();    
-    }
-    else
-      this.file.writeFile(this.file.dataDirectory, 'tasks.json', JSON.stringify(this._tasksSubject.value), {replace: true}).then(_ => console.log('Directory exists')).catch(err => console.log('Directory doesn\'t exist'));
+    var dataToText = JSON.stringify(this._tasksSubject.value);
+    var data = new Blob([dataToText], {type: 'text/plain'});
+    this.firebase.fileUpload(data, 'text/plain', 'tasks', '.txt');
   }
 }

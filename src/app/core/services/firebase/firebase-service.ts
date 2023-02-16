@@ -8,6 +8,11 @@ import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { Auth, getAuth, OAuthCredential, createUserWithEmailAndPassword, signInWithCredential, signInAnonymously, SignInMethod, signInWithPopup, signOut, UserCredential } from "firebase/auth";
 import { HttpClientProvider } from "src/app/core";
 
+export interface FileUploaded{
+  path:string,
+  file:string
+};
+
 export interface FirebaseDocument{
   id:string;
   data:DocumentData;
@@ -37,7 +42,8 @@ export abstract class FirebaseService{
   public isLogged$ = this._isLogged.asObservable();
 
   public abstract init();
-  public abstract imageUpload(blob: Blob): Promise<any>;
+  public abstract fileUpload(blob: Blob, mimeType:string, prefix:string, extension:string): Promise<FileUploaded>;
+  public abstract imageUpload(blob: Blob): Promise<FileUploaded>;
   public abstract createDocument(collectionName:string, data:any):Promise<string>;
   public abstract createDocumentWithId(collectionName:string, data:any, docId:string):Promise<void>;
   public abstract updateDocument(collectionName:string, document:string, data:any):Promise<void>;

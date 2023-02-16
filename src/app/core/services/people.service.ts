@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Person } from '../models/person.model';
 import { ApiService } from './api.service';
-import { FirebaseService } from './firebase/firebase-service';
+import { FileUploaded, FirebaseService } from './firebase/firebase-service';
 import { HttpClientProvider } from './http-client.provider';
 
 @Injectable({
@@ -106,8 +106,8 @@ export class PeopleService{
       nickname:person.nickname
     };
     if(person['pictureFile']){
-      var response = await this.uploadImage(person['pictureFile']);
-      _person['picture'] = response.image;
+      var response:FileUploaded = await this.uploadImage(person['pictureFile']);
+      _person['picture'] = response.file;
     }
     try {
       await this.firebase.updateDocument('usuarios', person.docId, _person);  
