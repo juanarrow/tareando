@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import { Task } from 'src/app/core/models/task.model';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
-import { FirebaseService } from './firebase/firebase-service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +14,13 @@ export class TasksService implements OnDestroy{
   public taks$ = this._tasksSubject.asObservable();
   unsubscr;
   constructor(
-    private api:ApiService,
-    private firebase:FirebaseService
+    private api:ApiService
   ) {
-    this.unsubscr = this.firebase.subscribeToCollection('tareas',this._tasksSubject, this.mapTask);
-    //this.refresh();
+  
+    this.refresh();
   }
   ngOnDestroy(): void {
     this.unsubscr();
-  }
-
-  private mapTask(doc:DocumentData){
-    return {
-      id:0,
-      docId:doc.id,
-      name:doc.data.name,
-      durationInSecs:doc.data.durationInSecs,
-      picture:doc.data.picture
-    };
   }
 
   private async refresh(){
