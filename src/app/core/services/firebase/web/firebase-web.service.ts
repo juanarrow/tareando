@@ -116,8 +116,7 @@ export class FirebaseWebService extends FirebaseService implements OnDestroy{
 
   public createDocumentWithId(collectionName:string, data:any, docId:string):Promise<void>{
     return new Promise((resolve,reject)=>{
-      const collectionRef = collection(this.db, collectionName);
-      const docRef = doc(this.db, 'usuarios', docId);
+      const docRef = doc(this.db, collectionName, docId);
       setDoc(docRef, data).then(docRef => resolve()
       ).catch(err =>  reject(err));
     });
